@@ -26,8 +26,8 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')
     ->group(function () {
-        Route::get('/expenses', GetExpensesController::class);
         Route::get('/expenses/{expense}', GetOneExpenseController::class);
+        Route::get('/expenses', GetExpensesController::class);
         Route::post('/expenses', CreateExpenseController::class);
         Route::patch('/expenses/{expense}', UpdateExpenseController::class);
         Route::delete('/expenses/{expense}', DeleteExpenseController::class);
