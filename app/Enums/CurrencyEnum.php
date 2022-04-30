@@ -7,4 +7,5 @@ enum CurrencyEnum: string
     case DOP = 'DOP';
     case USD = 'USD';
     case EUR = 'EUR';
+    case CAD = 'CAD';
 }
