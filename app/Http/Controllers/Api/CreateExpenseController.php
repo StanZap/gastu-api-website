@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\CurrencyEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rules\Enum;
 
 class CreateExpenseController extends Controller
 {
@@ -15,7 +17,8 @@ class CreateExpenseController extends Controller
             'amount' => ['required', 'min:0'],
             'title' => ['required', 'min:3'],
             'description' => ['required', 'min:3'],
-            'when' => ['required']
+            'when' => ['required'],
+            'currency' => [new Enum(CurrencyEnum::class)]
         ]);
 
         $expense = Expense::create([

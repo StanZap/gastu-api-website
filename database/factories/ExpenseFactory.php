@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CurrencyEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,12 +18,17 @@ class ExpenseFactory extends Factory
      */
     public function definition()
     {
+        $currencies = array_values(CurrencyEnum::cases());
+        $currencyOptions = array_map( fn($enumObj) => $enumObj->name, $currencies);
+        $randCurrency = $currencyOptions[rand(0, count($currencyOptions) - 1)];
+
         return [
             'amount' => rand(0, 1000) / 100,
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'user_id' => User::factory(),
-            'when' => now()
+            'when' => now(),
+            'currency' => $randCurrency //CurrencyEnum::from(random(0, CurrencyEnum::count())
         ];
     }
 }

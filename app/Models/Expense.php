@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CurrencyEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,9 +10,12 @@ class Expense extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'title', 'description', 'when', 'user_id'];
+    protected $fillable = ['amount', 'title', 'description', 'when', 'user_id', 'currency'];
 
-    protected $casts = ['when' => 'datetime'];
+    protected $casts = [
+        'when' => 'datetime',
+        'currency' => CurrencyEnum::class,
+    ];
 
     public function scopeFilter($query, array $filters)
     {

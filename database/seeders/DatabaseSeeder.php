@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $adminId = User::whereEmail(env('ADMIN_USER_EMAIL'))->first()?->id;
         Expense::factory(20)->create([
-            'user_id' => User::factory()->create()
+            'user_id' => $adminId ?? User::factory()->create()
         ]);
     }
 }

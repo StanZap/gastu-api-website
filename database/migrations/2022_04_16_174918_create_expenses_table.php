@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->dateTime('when');
+            $table->string('currency');
             $table->timestamps();
         });
     }

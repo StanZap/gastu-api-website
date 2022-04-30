@@ -9,10 +9,15 @@ class GetExpensesController extends Controller
 {
     public function __invoke()
     {
-        $expensesList = auth()->user()->expenses()
+        $expensesList = auth()->user()
+            ->expenses()
             ->getQuery()
             ->filter($this->getFilters())
-            ->paginate(request('limit'));
+            ->orderBy(
+                request('orderBy', 'updated_at'),
+                request('orderDirection', 'desc')
+            )
+            ->paginate(request('limit', 400));
 
         return response($expensesList, Response::HTTP_OK);
     }
@@ -21,6 +26,7 @@ class GetExpensesController extends Controller
     {
         return [
             'amount',
+            'currency',
             'description',
             'title',
             'user_id',
