@@ -2,22 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Models\Expense;
+use App\Models\Income;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class ExpensesTest extends TestCase
+class IncomesTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_expense_can_be_created()
+    public function test_income_can_be_created()
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $response = $this->post('/api/expenses', [
+        $response = $this->post('/api/incomes', [
             'title' => 'title',
             'description' => 'description',
             'amount' => 100.00,
@@ -30,16 +30,14 @@ class ExpensesTest extends TestCase
             ->assertStatus(201);
     }
 
-    public function test_expenses_can_be_retrieved_by_owner()
+    public function test_incomes_can_be_retrieved_by_owner()
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        Expense::factory(3)->create(['user_id' => $user->id]);
+        Income::factory(3)->create(['user_id' => $user->id]);
 
-        $response = $this->get('/api/expenses');
-
-        $response
+        $response = $this->get('/api/incomes')
             ->assertJsonStructure([
                 'data' => ['*' => ['id', 'amount', 'currency', 'title', 'description', 'when']]
             ])
@@ -53,43 +51,44 @@ class ExpensesTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $expense = Expense::factory()->create();
+        $income = Income::factory()->create();
 
-        $response = $this->patch('/api/expenses/' . $expense->id, [
+        $update = [
             'title' => 'Updated title',
             'amount' => 999.00
-        ]);
+        ];
 
-        $response->assertJsonStructure(['message'])
+        $response = $this->patch('/api/incomes/' . $income->id, $update);
+
+        $response
+            ->assertJsonStructure(['message'])
             ->assertStatus(200);
 
-        $this->assertDatabaseHas('expenses', [
-            'amount' => 999.00,
-            'title' => 'Updated title'
-        ]);
+        $this->assertDatabaseHas('incomes', $update)
+            ->assertDatabaseCount('incomes', 1);
     }
 
-    public function test_an_expense_can_be_deleted()
+    public function test_an_incomes_can_be_deleted()
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $expense = Expense::factory()->create(['user_id' => $user->id]);
+        $income = Income::factory()->create(['user_id' => $user->id]);
 
-        $this->delete('/api/expenses/' . $expense->id)
+        $this->delete('/api/incomes/' . $income->id)
             ->assertStatus(200);
 
-        $this->assertDatabaseMissing('expenses', ['id' => $expense->id]);
+        $this->assertDatabaseMissing('incomes', ['id' => $income->id]);
     }
 
-    public function test_one_expense_can_be_retrieve()
+    public function test_one_income_can_be_retrieve()
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $expense = Expense::factory()->create(['user_id' => $user->id]);
+        $income = Income::factory()->create(['user_id' => $user->id]);
 
-        $this->get('/api/expenses/' . $expense->id)
+        $this->get('/api/incomes/' . $income->id)
             ->assertJsonStructure([
                 'id',
                 'when',

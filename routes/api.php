@@ -1,10 +1,16 @@
 <?php
 
-use App\Http\Controllers\Api\CreateExpenseController;
-use App\Http\Controllers\Api\DeleteExpenseController;
-use App\Http\Controllers\Api\GetExpensesController;
-use App\Http\Controllers\Api\GetOneExpenseController;
-use App\Http\Controllers\Api\UpdateExpenseController;
+use App\Http\Controllers\Api\Expenses\GetOneExpenseController;
+use App\Http\Controllers\Api\Expenses\GetExpensesController;
+use App\Http\Controllers\Api\Expenses\CreateExpenseController;
+use App\Http\Controllers\Api\Expenses\UpdateExpenseController;
+use App\Http\Controllers\Api\Expenses\DeleteExpenseController;
+
+use App\Http\Controllers\Api\Incomes\UpdateIncomeController;
+use App\Http\Controllers\Api\Incomes\CreateIncomeController;
+use App\Http\Controllers\Api\Incomes\DeleteIncomeController;
+use App\Http\Controllers\Api\Incomes\GetIncomesController;
+use App\Http\Controllers\Api\Incomes\GetOneIncomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +31,21 @@ Route::middleware('auth:sanctum')
     });
 
 Route::middleware('auth:sanctum')
+    ->prefix('expenses')
     ->group(function () {
-        Route::get('/expenses/{expense}', GetOneExpenseController::class);
-        Route::get('/expenses', GetExpensesController::class);
-        Route::post('/expenses', CreateExpenseController::class);
-        Route::patch('/expenses/{expense}', UpdateExpenseController::class);
-        Route::delete('/expenses/{expense}', DeleteExpenseController::class);
+        Route::get('/{expense}', GetOneExpenseController::class);
+        Route::get('/', GetExpensesController::class);
+        Route::post('/', CreateExpenseController::class);
+        Route::patch('/{expense}', UpdateExpenseController::class);
+        Route::delete('/{expense}', DeleteExpenseController::class);
+    });
+
+Route::middleware('auth:sanctum')
+    ->prefix('incomes')
+    ->group(function () {
+        Route::get('/{income}', GetOneIncomeController::class);
+        Route::get('/', GetIncomesController::class);
+        Route::post('/', CreateIncomeController::class);
+        Route::patch('/{income}', UpdateIncomeController::class);
+        Route::delete('/{income}', DeleteIncomeController::class);
     });
