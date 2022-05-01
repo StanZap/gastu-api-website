@@ -9,27 +9,30 @@ class GetExpensesController extends Controller
 {
     public function __invoke()
     {
-        $expensesList = auth()->user()
+        $filters = request()->all($this->validWhereFilters());
+        $expenseList = auth()->user()
             ->expenses()
             ->getQuery()
-            ->filter($this->getFilters())
+            ->filter($filters)
             ->orderBy(
                 request('orderBy', 'updated_at'),
                 request('orderDirection', 'desc')
             )
-            ->paginate(request('limit', 400));
+            ->paginate(request('limit', 10));
 
-        return response($expensesList, Response::HTTP_OK);
+        return response($expenseList, Response::HTTP_OK);
     }
 
-    public function getFilters()
+    public function validWhereFilters()
     {
         return [
+            'search',
             'amount',
+            'amount>',
+            'amount<',
             'currency',
             'description',
             'title',
-            'user_id',
             'when'
         ];
     }

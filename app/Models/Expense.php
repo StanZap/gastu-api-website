@@ -10,7 +10,7 @@ class Expense extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'title', 'description', 'when', 'user_id', 'currency'];
+    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id'];
 
     protected $casts = [
         'when' => 'datetime',
