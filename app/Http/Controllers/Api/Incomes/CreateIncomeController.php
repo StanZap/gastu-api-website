@@ -21,10 +21,7 @@ class CreateIncomeController extends Controller
             'currency' => [new Enum(CurrencyEnum::class)]
         ]);
 
-        $incomes = Income::create([
-            ...$validated,
-            "user_id" => auth()->id()
-        ]);
+        $incomes = auth()->user()->expenses()->create($validated);
 
         return response(
             ['data' => $incomes],

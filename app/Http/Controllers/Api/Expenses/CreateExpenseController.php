@@ -21,10 +21,7 @@ class CreateExpenseController extends Controller
             'currency' => [new Enum(CurrencyEnum::class)]
         ]);
 
-        $expense = Expense::create([
-            ...$validated,
-            "user_id" => auth()->id()
-        ]);
+        $expense = auth()->user()->expenses()->create($validated);
 
         return response(
             ['data' => $expense],
