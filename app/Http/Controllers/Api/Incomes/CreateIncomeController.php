@@ -16,12 +16,12 @@ class CreateIncomeController extends Controller
         $validated = $request->validate([
             'amount' => ['required', 'min:0'],
             'title' => ['required', 'min:3'],
-            'description' => ['required', 'min:3'],
+            'description' => ['nullable', 'min:3'],
             'when' => ['required'],
             'currency' => [new Enum(CurrencyEnum::class)]
         ]);
 
-        $incomes = auth()->user()->expenses()->create($validated);
+        $incomes = auth()->user()->incomes()->create($validated);
 
         return response(
             ['data' => $incomes],

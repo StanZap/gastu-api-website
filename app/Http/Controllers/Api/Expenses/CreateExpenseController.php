@@ -16,7 +16,7 @@ class CreateExpenseController extends Controller
         $validated = $request->validate([
             'amount' => ['required', 'min:0'],
             'title' => ['required', 'min:3'],
-            'description' => ['required', 'min:3'],
+            'description' => ['nullable', 'min:3'],
             'when' => ['required'],
             'currency' => [new Enum(CurrencyEnum::class)]
         ]);
