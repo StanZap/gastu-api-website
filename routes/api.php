@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Expenses\CreateExpenseController;
 use App\Http\Controllers\Api\Expenses\UpdateExpenseController;
 use App\Http\Controllers\Api\Expenses\DeleteExpenseController;
 
+use App\Http\Controllers\Api\GlobalStatsController;
 use App\Http\Controllers\Api\Incomes\UpdateIncomeController;
 use App\Http\Controllers\Api\Incomes\CreateIncomeController;
 use App\Http\Controllers\Api\Incomes\DeleteIncomeController;
@@ -48,4 +49,10 @@ Route::middleware('auth:sanctum')
         Route::post('/', CreateIncomeController::class);
         Route::patch('/{income}', UpdateIncomeController::class);
         Route::delete('/{income}', DeleteIncomeController::class);
+    });
+
+Route::middleware('auth:sanctum')
+    ->prefix('stats')
+    ->group(function() {
+        Route::get('/global', GlobalStatsController::class);
     });

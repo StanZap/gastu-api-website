@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Expenses;
 
 use App\Enums\CurrencyEnum;
 use App\Http\Controllers\Controller;
-use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rules\Enum;
