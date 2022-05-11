@@ -21,6 +21,7 @@ class IncomeFactory extends Factory
         $currencies = array_values(CurrencyEnum::cases());
         $currencyOptions = array_map(fn($enumObj) => $enumObj->name, $currencies);
         $randCurrency = $currencyOptions[rand(0, count($currencyOptions) - 1)];
+        $randomDate = now()->subMonth(rand(0, 2))->subDays(rand(0, 30));
 
         return [
             'amount' => rand(0, 1000) / 100,
@@ -28,7 +29,7 @@ class IncomeFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'user_id' => User::factory(),
-            'when' => now()
+            'when' => $randomDate
         ];
     }
 }
