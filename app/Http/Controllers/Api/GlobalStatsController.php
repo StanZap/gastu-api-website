@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Expense;
-use App\Models\Income;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GlobalStatsController extends Controller
@@ -15,7 +12,7 @@ class GlobalStatsController extends Controller
         $firstOfPrevMonth = now()->firstOfMonth()->subMonth();
         $firstOfMonth = now()->firstOfMonth();
         $stats = $query
-            ->selectRaw(DB::raw('sum("amount") as amount, currency, CASE WHEN `when` >= ? THEN "current" WHEN `when` < ? THEN "prev" END AS month'), [$firstOfMonth, $firstOfMonth])
+            ->selectRaw(DB::raw('sum(amount) as amount, currency, CASE WHEN `when` >= ? THEN "current" WHEN `when` < ? THEN "prev" END AS month'), [$firstOfMonth, $firstOfMonth])
             ->where('user_id', auth()->id())
             ->where('when', '>=', $firstOfPrevMonth)
             ->groupBy('currency', 'month')
