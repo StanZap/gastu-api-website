@@ -12,7 +12,6 @@ class GlobalStatsController extends Controller
 {
     public function queryStats($query)
     {
-
         $firstOfPrevMonth = now()->firstOfMonth()->subMonth();
         $firstOfMonth = now()->firstOfMonth();
         $stats = $query
