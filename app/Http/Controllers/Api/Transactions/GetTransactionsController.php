@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\Expenses;
+namespace App\Http\Controllers\Api\Transactions;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-class GetExpensesController extends Controller
+class GetTransactionsController extends Controller
 {
     public function __invoke()
     {
         $filters = request()->all($this->validWhereFilters());
-        $expenseList = auth()->user()
-            ->expenses()
+        $transactionItems = auth()->user()
+            ->transactions()
             ->getQuery()
             ->filter($filters)
             ->orderBy(
@@ -20,7 +20,7 @@ class GetExpensesController extends Controller
             )
             ->paginate(request('limit', 10));
 
-        return response($expenseList, Response::HTTP_OK);
+        return response($transactionItems, Response::HTTP_OK);
     }
 
     public function validWhereFilters()
@@ -33,7 +33,8 @@ class GetExpensesController extends Controller
             'currency',
             'description',
             'title',
-            'when'
+            'when',
+            'type'
         ];
     }
 }

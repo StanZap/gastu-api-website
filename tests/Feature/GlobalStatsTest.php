@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Expense;
-use App\Models\Income;
+use App\Enums\TransactionType;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,27 +20,27 @@ class GlobalStatsTest extends TestCase
     public function addPrevMonthIncome($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Income::factory()->create(['amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionType::Income, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
 
     }
 
     public function addCurrentMonthIncome($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Income::factory()->create(['amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionType::Income, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
     }
 
     public function addPrevMonthExpense($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Expense::factory()->create(['amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionType::Expense, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
 
     }
 
     public function addCurrentMonthExpense($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Expense::factory()->create(['amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionType::Expense, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
     }
 
     public function currentMonth($days)
@@ -57,6 +57,8 @@ class GlobalStatsTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
+
+        $this->withoutExceptionHandling();
 
         $this->addCurrentMonthExpense('DOP', 200, 5);
         $this->addCurrentMonthExpense('DOP', 300, 10);
@@ -97,7 +99,12 @@ class GlobalStatsTest extends TestCase
 
 
         $response = $this->withoutExceptionHandling()
-            ->get('/api/stats/global');
+            ->call('GET',
+                '/api/stats/global',
+                [
+                    'month' => now()->year . '-' . now()->month,
+                ]
+            );
 
         $expected = [
             'expenses' => [

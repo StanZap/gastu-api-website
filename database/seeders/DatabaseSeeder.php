@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Expense;
+use App\Models\Transaction;
 use App\Models\Income;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,10 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $adminId = User::whereEmail(env('ADMIN_USER_EMAIL'))->first()?->id;
-        Expense::factory(20)->create([
-            'user_id' => $adminId ?? User::factory()->create()
-        ]);
-        Income::factory(20)->create([
+        Transaction::factory(40)->create([
             'user_id' => $adminId ?? User::factory()->create()
         ]);
     }

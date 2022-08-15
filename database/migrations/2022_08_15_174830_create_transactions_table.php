@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('incomes', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->decimal('amount');
             $table->string('title');
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->dateTime('when');
             $table->string('currency');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -32,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incomes');
+        Schema::table('transactions', function (Blueprint $table) {
+            //
+        });
     }
 };

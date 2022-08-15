@@ -1,17 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\Expenses\GetOneExpenseController;
-use App\Http\Controllers\Api\Expenses\GetExpensesController;
-use App\Http\Controllers\Api\Expenses\CreateExpenseController;
-use App\Http\Controllers\Api\Expenses\UpdateExpenseController;
-use App\Http\Controllers\Api\Expenses\DeleteExpenseController;
-
+use App\Http\Controllers\Api\Transactions\CreateTransactionController;
+use App\Http\Controllers\Api\Transactions\DeleteTransactionController;
+use App\Http\Controllers\Api\Transactions\GetTransactionsController;
+use App\Http\Controllers\Api\Transactions\GetOneTransactionController;
+use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
 use App\Http\Controllers\Api\GlobalStatsController;
-use App\Http\Controllers\Api\Incomes\UpdateIncomeController;
-use App\Http\Controllers\Api\Incomes\CreateIncomeController;
-use App\Http\Controllers\Api\Incomes\DeleteIncomeController;
-use App\Http\Controllers\Api\Incomes\GetIncomesController;
-use App\Http\Controllers\Api\Incomes\GetOneIncomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,27 +26,17 @@ Route::middleware('auth:sanctum')
     });
 
 Route::middleware('auth:sanctum')
-    ->prefix('expenses')
+    ->prefix('transactions')
     ->group(function () {
-        Route::get('/{expense}', GetOneExpenseController::class);
-        Route::get('/', GetExpensesController::class);
-        Route::post('/', CreateExpenseController::class);
-        Route::patch('/{expense}', UpdateExpenseController::class);
-        Route::delete('/{expense}', DeleteExpenseController::class);
-    });
-
-Route::middleware('auth:sanctum')
-    ->prefix('incomes')
-    ->group(function () {
-        Route::get('/{income}', GetOneIncomeController::class);
-        Route::get('/', GetIncomesController::class);
-        Route::post('/', CreateIncomeController::class);
-        Route::patch('/{income}', UpdateIncomeController::class);
-        Route::delete('/{income}', DeleteIncomeController::class);
+        Route::get('/{transaction}', GetOneTransactionController::class);
+        Route::get('/', GetTransactionsController::class);
+        Route::post('/', CreateTransactionController::class);
+        Route::patch('/{transaction}', UpdateTransactionController::class);
+        Route::delete('/{transaction}', DeleteTransactionController::class);
     });
 
 Route::middleware('auth:sanctum')
     ->prefix('stats')
-    ->group(function() {
+    ->group(function () {
         Route::get('/global', GlobalStatsController::class);
     });

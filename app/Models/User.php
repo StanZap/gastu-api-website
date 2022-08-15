@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TransactionType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -59,13 +60,20 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function expenses()
+    public function transactions()
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(Transaction::class);
     }
 
-    public function incomes()
-    {
-        return $this->hasMany(Income::class);
-    }
+//    public function expenses()
+//    {
+//        return $this->hasMany(Transaction::class)
+//            ->where('type', TransactionType::Expense->value);
+//    }
+//
+//    public function incomes()
+//    {
+//        return $this->hasMany(Income::class)
+//            ->where('type', TransactionType::Income->value);
+//    }
 }

@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use App\Enums\CurrencyEnum;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id'];
+    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id', 'type'];
 
     protected $casts = [
         'when' => 'datetime',
         'currency' => CurrencyEnum::class,
+        'type' => TransactionType::class
     ];
 
     public function scopeFilter($query, array $filters)
@@ -26,6 +28,10 @@ class Expense extends Model
                     ->where('title', 'like', $regex)
                     ->orWhere('description', 'like', $regex)
             );
+        }
+
+        if($filters['type'] ?? false) {
+            $query->where('type', $filters['type']);
         }
 
         $this->addFilter($query, $filters, 'amount');

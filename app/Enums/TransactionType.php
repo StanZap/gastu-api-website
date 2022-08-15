@@ -2,12 +2,10 @@
 
 namespace App\Enums;
 
-enum CurrencyEnum: string
+enum TransactionType: string
 {
-    case DOP = 'DOP';
-    case USD = 'USD';
-    case EUR = 'EUR';
-    case CAD = 'CAD';
+    case Expense = 'expense';
+    case Income = 'income';
 
     public static function random(): self {
         $max = count(self::cases()) - 1;
