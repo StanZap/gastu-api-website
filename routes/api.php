@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\GenerateTokenController;
+use App\Http\Controllers\Api\Auth\RevokeTokenController;
 use App\Http\Controllers\Api\Transactions\CreateTransactionController;
 use App\Http\Controllers\Api\Transactions\DeleteTransactionController;
 use App\Http\Controllers\Api\Transactions\GetTransactionsController;
@@ -40,3 +42,12 @@ Route::middleware('auth:sanctum')
     ->group(function () {
         Route::get('/global', GlobalStatsController::class);
     });
+
+Route::prefix('auth')
+    ->group(function () {
+        Route::post('create-token', GenerateTokenController::class);
+
+        Route::middleware('auth:sanctum')
+            ->post('revoke-token', RevokeTokenController::class);
+    });
+
