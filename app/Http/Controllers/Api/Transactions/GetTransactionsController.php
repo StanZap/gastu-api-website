@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Transactions;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class GetTransactionsController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $filters = request()->all($this->validWhereFilters());
         $transactionItems = auth()->user()
@@ -18,9 +19,9 @@ class GetTransactionsController extends Controller
                 request('orderBy', 'updated_at'),
                 request('orderDirection', 'desc')
             )
-            ->paginate(request('limit', 10));
+            ->paginate($request->get('limit', 10));
 
-        return response($transactionItems, Response::HTTP_OK);
+        return new Response($transactionItems, Response::HTTP_OK);
     }
 
     public function validWhereFilters()
