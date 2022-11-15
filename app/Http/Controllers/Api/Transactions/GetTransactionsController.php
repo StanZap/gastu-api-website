@@ -13,6 +13,7 @@ class GetTransactionsController extends Controller
         $filters = request()->all($this->validWhereFilters());
         $transactionItems = auth()->user()
             ->transactions()
+            ->with(['fromAccount', 'toAccount'])
             ->getQuery()
             ->filter($filters)
             ->orderBy(

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Accounts\CreateAccountsController;
 use App\Http\Controllers\Api\Auth\GenerateTokenController;
 use App\Http\Controllers\Api\Auth\RevokeTokenController;
 use App\Http\Controllers\Api\Transactions\CreateTransactionController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Api\Transactions\GetTransactionsController;
 use App\Http\Controllers\Api\Transactions\GetOneTransactionController;
 use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
 use App\Http\Controllers\Api\GlobalStatsController;
+use App\Http\Controllers\GetAccountListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +30,15 @@ Route::middleware('auth:sanctum')
     });
 
 Route::middleware('auth:sanctum')
-    ->prefix('transactions')
+    ->prefix('me/accounts')
+    ->group(function() {
+    Route::post('', CreateAccountsController::class);
+    Route::get('', GetAccountListController::class);
+
+});
+
+Route::middleware('auth:sanctum')
+    ->prefix('me/transactions')
     ->group(function () {
         Route::get('/{transaction}', GetOneTransactionController::class);
         Route::get('/', GetTransactionsController::class);

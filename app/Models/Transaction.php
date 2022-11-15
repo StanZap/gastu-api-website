@@ -6,12 +6,13 @@ use App\Enums\CurrencyEnum;
 use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id', 'type'];
+    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id', 'type', 'to_account_id'];
 
     protected $casts = [
         'when' => 'datetime',
@@ -54,5 +55,15 @@ class Transaction extends Model
                 doubleval($filters[$filtrable . '<'])
             );
         }
+    }
+
+    public function fromAccount(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'from_account_id');
+    }
+
+    public function toAccount(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'to_account_id');
     }
 }

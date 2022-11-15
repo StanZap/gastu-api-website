@@ -8,6 +8,7 @@ classDiagram
     -id: Int
     -title: String
     -description: String
+    -provider_name: String
     -owner_id: Int
     -onwer_type: String
   }

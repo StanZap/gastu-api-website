@@ -76,4 +76,9 @@ class User extends Authenticatable
 //        return $this->hasMany(Income::class)
 //            ->where('type', TransactionType::Income->value);
 //    }
+
+    public function accounts()
+    {
+        return $this->morphMany(Account::class, 'owner');
+    }
 }
