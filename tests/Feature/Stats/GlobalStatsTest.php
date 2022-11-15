@@ -1,14 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Stats;
 
 use App\Enums\TransactionType;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
