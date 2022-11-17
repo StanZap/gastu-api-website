@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -39,10 +39,10 @@ class GlobalStatsController extends Controller
         [$year, $month] = $date;
         $monthDate = Carbon::createFromDate($year, $month, 1, ) ?? now();
 
-        $expensesQuery = DB::table('transactions')->where('type', TransactionType::Expense->value);
+        $expensesQuery = DB::table('transactions')->where('type', TransactionTypeEnum::EXPENSE->value);
         $expenseStats = $this->queryStats($monthDate, $expensesQuery);
 
-        $incomesQuery = DB::table('transactions')->where('type', TransactionType::Income->value);
+        $incomesQuery = DB::table('transactions')->where('type', TransactionTypeEnum::INCOME->value);
         $incomeStats = $this->queryStats($monthDate, $incomesQuery);
 
         return response([

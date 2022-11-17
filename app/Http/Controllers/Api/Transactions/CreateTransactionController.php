@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Transactions;
 
 use App\Enums\CurrencyEnum;
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
@@ -19,22 +19,22 @@ class CreateTransactionController extends Controller
     {
         $validated = $request->validate([
             'amount' => ['required', 'numeric', 'min:0'],
-            'title' => ['required', 'min:3'],
+            'subject' => ['required', 'min:3'],
             'description' => ['nullable', 'min:3'],
             'when' => ['required'],
-            'currency' => [new Enum(CurrencyEnum::class)],
-            'type' => [new Enum(TransactionType::class)],
+            'currency' => ['required', new Enum(CurrencyEnum::class)],
+            'type' => ['required', new Enum(TransactionTypeEnum::class)],
             'from_account_id' => [
                 Rule::requiredIf(fn() => in_array($request->type, [
-                    TransactionType::Expense,
-                    TransactionType::Transfer
+                    TransactionTypeEnum::EXPENSE,
+                    TransactionTypeEnum::TRANSFER
                 ])),
                 'exists:accounts,id'
             ],
             'to_account_id' => [
                 Rule::requiredIf(fn() => in_array($request->type, [
-                    TransactionType::Income,
-                    TransactionType::Transfer
+                    TransactionTypeEnum::INCOME,
+                    TransactionTypeEnum::TRANSFER
                 ])),
                 'exists:accounts,id'
             ],
@@ -42,7 +42,7 @@ class CreateTransactionController extends Controller
 
         $authUser = auth()->user();
 
-        if($validated['type'] === TransactionType::Income->value) {
+        if($validated['type'] === TransactionTypeEnum::INCOME->value) {
             $account = Account::where('id', $validated['to_account_id'])->first();
             if($account) {
                $account->amount = $account->amount + $validated['amount'];
@@ -54,7 +54,7 @@ class CreateTransactionController extends Controller
                     Response::HTTP_CREATED
                 );
             }
-        } else if ($validated['type'] === TransactionType::Expense->value) {
+        } else if ($validated['type'] === TransactionTypeEnum::EXPENSE->value) {
             $account = Account::where('id', $validated['from_account_id'])->first();
             if($account) {
                 $account->amount = $account->amount - $validated['amount'];
@@ -66,7 +66,7 @@ class CreateTransactionController extends Controller
                     Response::HTTP_CREATED
                 );
             }
-        } else if ($validated['type'] === TransactionType::Transfer->value) {
+        } else if ($validated['type'] === TransactionTypeEnum::TRANSFER->value) {
             $fromAccount = Account::where('id', $validated['from_account_id'])->first();
             $toAccount = Account::where('id', $validated['to_account_id'])->first();
             if ($fromAccount && $toAccount) {

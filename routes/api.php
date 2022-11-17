@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Transactions\GetOneTransactionController;
 use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
 use App\Http\Controllers\Api\GlobalStatsController;
 use App\Http\Controllers\GetAccountListController;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +26,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')
-    ->get('/user', function (Request $request) {
-        return $request->user();
+    ->get('/me/profile', function (Request $request) {
+        return new ProfileResource(auth()->user());
+//        return auth()->user();
     });
 
 Route::middleware('auth:sanctum')

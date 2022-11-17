@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -77,8 +78,8 @@ class User extends Authenticatable
 //            ->where('type', TransactionType::Income->value);
 //    }
 
-    public function accounts()
+    public function accounts(): MorphMany
     {
-        return $this->morphMany(Account::class, 'owner');
+        return $this->morphMany(Account::class, 'owner', 'owner_type', 'id');
     }
 }

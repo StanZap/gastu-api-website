@@ -13,8 +13,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->foreignId('to_account_id')->nullable()->constrained('accounts');
-            $table->foreignId('from_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('to_account_id')
+                ->nullable()
+                ->constrained('accounts')
+                ->onDelete("cascade");
+
+            $table->foreignId('from_account_id')
+                ->nullable()
+                ->constrained('accounts')
+                ->onDelete("cascade");
+            $table->renameColumn('title', 'subject');
         });
     }
 
@@ -30,6 +38,7 @@ return new class extends Migration {
                 'to_account_id',
                 'from_account_id',
             ]);
+            $table->renameColumn('subject', 'title');
         });
     }
 };

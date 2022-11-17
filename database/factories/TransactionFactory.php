@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\CurrencyEnum;
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,15 +24,15 @@ class TransactionFactory extends Factory
         $currencyOptions = array_map(fn($enumObj) => $enumObj->name, $currencies);
         $randCurrency = $currencyOptions[rand(0, count($currencyOptions) - 1)];
         $randomDate = now()->subMonth(rand(0, 2))->subDays(rand(0, 30));
-        $type = TransactionType::random()->value;
+        $type = TransactionTypeEnum::random()->value;
 
         $fromAccount = null;
-        if (in_array($type, [TransactionType::Expense, TransactionType::Transfer]))  {
+        if (in_array($type, [TransactionTypeEnum::EXPENSE, TransactionTypeEnum::TRANSFER]))  {
             $fromAccount = Account::factory();
         }
 
         $toAccount = null;
-        if (in_array($type, [TransactionType::Income, TransactionType::Transfer]))  {
+        if (in_array($type, [TransactionTypeEnum::INCOME, TransactionTypeEnum::TRANSFER]))  {
             $toAccount = Account::factory();
         }
 

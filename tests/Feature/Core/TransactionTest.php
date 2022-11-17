@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Core;
 
-use App\Enums\TransactionType;
+use App\Enums\CurrencyEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\User;
@@ -11,10 +12,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 use function Pest\Laravel\post;
+use function Pest\Laravel\withoutExceptionHandling;
 use function PHPUnit\Framework\assertCount;
 
 uses(DatabaseMigrations::class);
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+   withoutExceptionHandling();
+});
 
 
 test("a user can make an income transaction", function () {
@@ -23,22 +29,22 @@ test("a user can make an income transaction", function () {
 
     $toAccount = Account::factory()->create([
         'owner_id' => $user->id,
-        'amount' => 500
+        'amount' => 500,
     ]);
 
     $resp = post('/api/me/transactions', [
-        'title' => 'title',
+        'subject' => 'subject',
         'description' => 'description',
         'amount' => 100.00,
-        'currency' => 'DOP',
+        'currency' => $toAccount->currency,
         'when' => now(),
-        'type' => TransactionType::Income->value,
+        'type' => TransactionTypeEnum::INCOME->value,
         'to_account_id' => $toAccount->id
     ])
         ->assertJsonStructure(['data'])
         ->assertStatus(201);
 
-    $newTransaction = Transaction::where('type', TransactionType::Income)->first();
+    $newTransaction = Transaction::where('type', TransactionTypeEnum::INCOME)->first();
     $this->assertEquals($resp['data']['id'], $newTransaction->id);
 
     $toAccount->refresh();
@@ -56,18 +62,18 @@ test("a user can make an expense transaction", function () {
     ]);
 
     $resp = post('/api/me/transactions', [
-        'title' => 'title',
+        'subject' => 'subject',
         'description' => 'description',
         'amount' => 200.00,
-        'currency' => 'DOP',
+        'currency' => $fromAccount->currency,
         'when' => now(),
-        'type' => TransactionType::Expense->value,
+        'type' => TransactionTypeEnum::EXPENSE->value,
         'from_account_id' => $fromAccount->id,
     ])
         ->assertJsonStructure(['data'])
         ->assertStatus(201);
 
-    $newTransaction = Transaction::where('type', TransactionType::Expense)->first();
+    $newTransaction = Transaction::where('type', TransactionTypeEnum::EXPENSE)->first();
     $this->assertEquals($resp['data']['id'], $newTransaction->id);
 
     $fromAccount->refresh();
@@ -80,27 +86,29 @@ test("a user can make a transfer transaction between two accounts", function () 
 
     $fromAccount = Account::factory()->create([
         'owner_id' => $user->id,
-        'amount' => 1400
+        'amount' => 1400,
+        'currency' => CurrencyEnum::CAD->value
     ]);
     $toAccount = Account::factory()->create([
         'owner_id' => $user->id,
         'amount' => 7300,
+        'currency' => CurrencyEnum::CAD->value
     ]);
 
     $resp = post('/api/me/transactions', [
-        'title' => 'title',
+        'subject' => 'subject',
         'description' => 'description',
         'amount' => 400.00,
-        'currency' => 'DOP',
+        'currency' => $fromAccount->currency,
         'when' => now(),
-        'type' => TransactionType::Transfer->value,
+        'type' => TransactionTypeEnum::TRANSFER->value,
         'from_account_id' => $fromAccount->id,
         'to_account_id' => $toAccount->id,
     ])
         ->assertJsonStructure(['data'])
         ->assertStatus(201);
 
-    $newTransaction = Transaction::where('type', TransactionType::Transfer)->first();
+    $newTransaction = Transaction::where('type', TransactionTypeEnum::TRANSFER)->first();
     $this->assertEquals($resp['data']['id'], $newTransaction->id);
 
     $fromAccount->refresh();
@@ -114,11 +122,11 @@ test("a user can fetch their transactions", function () {
     $user = User::factory()->create();
     Sanctum::actingAs($user);
 
-    Transaction::factory(3)->create(['user_id' => $user->id, 'type' => TransactionType::Income]);
-    Transaction::factory(2)->create(['user_id' => $user->id, 'type' => TransactionType::Expense]);
+    Transaction::factory(3)->create(['user_id' => $user->id, 'type' => TransactionTypeEnum::INCOME]);
+    Transaction::factory(2)->create(['user_id' => $user->id, 'type' => TransactionTypeEnum::EXPENSE]);
     Transaction::factory(2)->create([
         'user_id' => $user->id,
-        'type' => TransactionType::Transfer,
+        'type' => TransactionTypeEnum::TRANSFER,
         'amount' => 50.0,
         'from_account_id' => Account::factory()->create(['amount' => 1000]),
         'to_account_id' => Account::factory()->create(['amount' => 1000]),
@@ -137,10 +145,10 @@ test("a_transaction_can_be_updated", function () {
     $user = User::factory()->create();
     Sanctum::actingAs($user);
 
-    $income = Transaction::factory()->create(['type' => TransactionType::Income]);
+    $income = Transaction::factory()->create(['type' => TransactionTypeEnum::INCOME]);
 
     $update = [
-        'title' => 'Updated title',
+        'subject' => 'Updated title',
         'amount' => 999.00
     ];
 
@@ -152,7 +160,7 @@ test("a_transaction_can_be_updated", function () {
 
     $this->assertDatabaseHas('transactions', [
         ...$update,
-        'type' => TransactionType::Income->value
+        'type' => TransactionTypeEnum::INCOME->value
     ])
         ->assertDatabaseCount('transactions', 1);
 })
@@ -184,7 +192,7 @@ test("one_transaction_can_be_retrieve", function () {
                 'when',
                 'amount',
                 'currency',
-                'title',
+                'subject',
                 'description',
                 'type',
                 'created_at',

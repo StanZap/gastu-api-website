@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\AccountTypeEnum;
+use App\Enums\CurrencyEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +25,9 @@ class AccountFactory extends Factory
             'provider_name' => $this->faker->sentence(),
             'owner_type' => User::class,
             'owner_id' => User::factory(),
-            'amount' => 100
+            'amount' => 100,
+            'currency' => CurrencyEnum::random()->value,
+            'type' => AccountTypeEnum::random()->value,
         ];
     }
 }

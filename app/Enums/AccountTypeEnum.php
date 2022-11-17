@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum TransactionType: string
+enum AccountTypeEnum: string
 {
-    case Expense = 'expense';
-    case Income = 'income';
-    case Transfer = 'transfer';
+    case SAVINGS = 'savings';
+    case CHECKING = 'checking';
+    case CREDIT_CARD = 'credit_card';
 
     public static function random(): self {
         $max = count(self::cases()) - 1;

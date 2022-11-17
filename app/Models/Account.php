@@ -9,7 +9,16 @@ class Account extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'amount', 'provider_name', 'description', 'owner_id', 'owner_type'];
+    protected $fillable = [
+        'title',
+        'amount',
+        'provider_name',
+        'description',
+        'owner_id',
+        'owner_type',
+        'type',
+        'currency'
+    ];
 
     public function owner()
     {

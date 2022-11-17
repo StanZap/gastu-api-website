@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CurrencyEnum;
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,12 +12,12 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'currency', 'title', 'description', 'when', 'user_id', 'type', 'to_account_id'];
+    protected $fillable = ['amount', 'currency', 'subject', 'description', 'when', 'user_id', 'type', 'to_account_id'];
 
     protected $casts = [
         'when' => 'datetime',
         'currency' => CurrencyEnum::class,
-        'type' => TransactionType::class
+        'type' => TransactionTypeEnum::class
     ];
 
     public function scopeFilter($query, array $filters)
@@ -26,7 +26,7 @@ class Transaction extends Model
             $regex = '%' . $filters['search'] . '%';
             $query->where(
                 fn($q) => $q
-                    ->where('title', 'like', $regex)
+                    ->where('subject', 'like', $regex)
                     ->orWhere('description', 'like', $regex)
             );
         }

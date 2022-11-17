@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Stats;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -17,27 +17,27 @@ class GlobalStatsTest extends TestCase
     public function addPrevMonthIncome($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Transaction::factory()->create(['type' => TransactionType::Income, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionTypeEnum::INCOME, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
 
     }
 
     public function addCurrentMonthIncome($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Transaction::factory()->create(['type' => TransactionType::Income, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionTypeEnum::INCOME, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
     }
 
     public function addPrevMonthExpense($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Transaction::factory()->create(['type' => TransactionType::Expense, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionTypeEnum::EXPENSE, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->prevMonth($days)]);
 
     }
 
     public function addCurrentMonthExpense($currency, $amount, $days)
     {
         $userId = Auth::id();
-        Transaction::factory()->create(['type' => TransactionType::Expense, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
+        Transaction::factory()->create(['type' => TransactionTypeEnum::EXPENSE, 'amount' => $amount, 'currency' => $currency, 'user_id' => $userId, 'when' => $this->currentMonth($days)]);
     }
 
     public function currentMonth($days)

@@ -34,9 +34,10 @@ class GetTransactionsController extends Controller
             'amount<',
             'currency',
             'description',
-            'title',
+            'subject',
             'when',
-            'type'
+            'type',
+            'currency'
         ];
     }
 }

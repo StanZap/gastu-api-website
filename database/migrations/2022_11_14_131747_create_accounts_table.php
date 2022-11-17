@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->decimal('amount');
+            $table->string('currency');
+            $table->string('type');
             $table->string("description")->nullable();
             $table->string('provider_name');
             $table->bigInteger("owner_id");

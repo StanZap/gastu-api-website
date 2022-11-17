@@ -1,9 +1,13 @@
 <?php
 
+use App\Enums\AccountTypeEnum;
+use App\Enums\CurrencyEnum;
 use App\Models\Account;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -13,15 +17,19 @@ use function PHPUnit\Framework\assertCount;
 uses(DatabaseMigrations::class);
 uses(RefreshDatabase::class);
 
-test("a user can create an account", function () {
+beforeEach(function() {
     withoutExceptionHandling();
+});
 
+test("a user can create an account", function () {
     $user = User::factory()->create();
-    actingAs($user);
+    Sanctum::actingAs($user);
 
     $resp = post('/api/me/accounts', [
         'title' => 'Cuenta Ahorro 2011',
-        'provider_name' => 'Banco BHD'
+        'provider_name' => 'Banco BHD',
+        'currency' => CurrencyEnum::DOP->value,
+        'type' => AccountTypeEnum::SAVING->value,
     ])
         ->assertStatus(201);
 
@@ -34,15 +42,17 @@ test("a user can create an account", function () {
 
 test("a user can retrieve their accounts", function () {
     $user = User::factory()->create();
-    actingAs($user);
+    $team = Team::factory()->create(['user_id' => $user]);
+    Sanctum::actingAs($user);
 
-    Account::factory(2)->create(['owner_id' => $user->id]);
+    Account::factory(2)->create(['owner_id' => $team->id, 'owner_type' => 'team']);
+    $count = Account::query()->count();
 
     $resp = get('/api/me/accounts')
         ->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'id', 'title', 'description', 'owner_id', 'provider_name'
+                    'id', 'title', 'description', 'owner_id', 'provider_name', 'amount', 'currency', 'type'
                 ]
             ]
         ])
