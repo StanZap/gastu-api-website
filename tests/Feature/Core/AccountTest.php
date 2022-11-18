@@ -8,11 +8,9 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
-use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\withoutExceptionHandling;
-use function PHPUnit\Framework\assertCount;
 
 uses(DatabaseMigrations::class);
 uses(RefreshDatabase::class);
@@ -29,7 +27,7 @@ test("a user can create an account", function () {
         'title' => 'Cuenta Ahorro 2011',
         'provider_name' => 'Banco BHD',
         'currency' => CurrencyEnum::DOP->value,
-        'type' => AccountTypeEnum::SAVING->value,
+        'type' => AccountTypeEnum::SAVINGS->value,
     ])
         ->assertStatus(201);
 

@@ -12,7 +12,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'currency', 'subject', 'description', 'when', 'user_id', 'type', 'to_account_id'];
+    protected $fillable = ['amount', 'currency', 'subject', 'description', 'when', 'user_id', 'type', 'to_account_id', 'from_account_id'];
 
     protected $casts = [
         'when' => 'datetime',
@@ -31,7 +31,7 @@ class Transaction extends Model
             );
         }
 
-        if($filters['type'] ?? false) {
+        if ($filters['type'] ?? false) {
             $query->where('type', $filters['type']);
         }
 

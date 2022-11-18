@@ -41,12 +41,25 @@ class CreateTransactionController extends Controller
         ]);
 
         $authUser = auth()->user();
+        $fromAccount = null;
+        $toAccount = null;
+        $teamIds = auth()->user()->allTeams()->pluck('id')->toArray();
+        if(array_key_exists('from_account_id', $validated)) {
+            $fromAccount = Account::where('id', $validated['from_account_id'])
+                ->whereIn('owner_id', $teamIds)
+                ->first();
+        }
+
+        if(array_key_exists('to_account_id', $validated)) {
+            $toAccount = Account::where('id', $validated['to_account_id'])
+                ->whereIn('owner_id', $teamIds)
+                ->first();
+        }
 
         if($validated['type'] === TransactionTypeEnum::INCOME->value) {
-            $account = Account::where('id', $validated['to_account_id'])->first();
-            if($account) {
-               $account->amount = $account->amount + $validated['amount'];
-               $account->save();
+            if($toAccount) {
+               $toAccount->amount = $toAccount->amount + $validated['amount'];
+               $toAccount->save();
                $transaction = $authUser->transactions()->create($validated);
 
                 return response(
@@ -55,10 +68,9 @@ class CreateTransactionController extends Controller
                 );
             }
         } else if ($validated['type'] === TransactionTypeEnum::EXPENSE->value) {
-            $account = Account::where('id', $validated['from_account_id'])->first();
-            if($account) {
-                $account->amount = $account->amount - $validated['amount'];
-                $account->save();
+            if($fromAccount) {
+                $fromAccount->amount = $fromAccount->amount - $validated['amount'];
+                $fromAccount->save();
                 $transaction = $authUser->transactions()->create($validated);
 
                 return response(
@@ -67,8 +79,6 @@ class CreateTransactionController extends Controller
                 );
             }
         } else if ($validated['type'] === TransactionTypeEnum::TRANSFER->value) {
-            $fromAccount = Account::where('id', $validated['from_account_id'])->first();
-            $toAccount = Account::where('id', $validated['to_account_id'])->first();
             if ($fromAccount && $toAccount) {
                 $fromAccount->amount = $fromAccount->amount - $validated['amount'];
                 $toAccount->amount = $toAccount->amount + $validated['amount'];
