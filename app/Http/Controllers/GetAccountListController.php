@@ -12,6 +12,10 @@ class GetAccountListController extends Controller
         $teamIds = auth()->user()->allTeams()->pluck('id');
         $accountData = Account::with('owner')
             ->whereIn('owner_id', $teamIds)
+            ->orderBy(
+                $request->get('orderBy', 'updated_at'),
+                $request->get('orderDirection', 'desc')
+            )
             ->paginate();
         return $accountData;
     }
