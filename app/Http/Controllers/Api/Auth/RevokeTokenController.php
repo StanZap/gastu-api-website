@@ -14,7 +14,7 @@ class RevokeTokenController extends Controller
      */
     public function __invoke()
     {
-        auth()->user()->currentAccessToken()->delete();
+        auth()->guard('web')->logout();
         return new Response('');
     }
 }
