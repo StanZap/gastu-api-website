@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Accounts\CreateAccountsController;
+use App\Http\Controllers\Api\Accounts\UpdateAccountController;
 use App\Http\Controllers\Api\Auth\GenerateTokenController;
 use App\Http\Controllers\Api\Auth\RevokeTokenController;
 use App\Http\Controllers\Api\Transactions\CreateTransactionController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Api\Transactions\DeleteTransactionController;
 use App\Http\Controllers\Api\Transactions\GetTransactionsController;
 use App\Http\Controllers\Api\Transactions\GetOneTransactionController;
 use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
+use App\Http\Controllers\Api\Accounts\GetOneAccountController;
 use App\Http\Controllers\Api\GlobalStatsController;
 use App\Http\Controllers\GetAccountListController;
 use App\Http\Resources\ProfileResource;
@@ -33,11 +35,13 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')
     ->prefix('me/accounts')
-    ->group(function() {
-    Route::post('', CreateAccountsController::class);
-    Route::get('', GetAccountListController::class);
+    ->group(function () {
+        Route::post('', CreateAccountsController::class);
+        Route::get('', GetAccountListController::class);
+        Route::get('{account}', GetOneAccountController::class);
+        Route::patch('{account}', UpdateAccountController::class);
 
-});
+    });
 
 Route::middleware('auth:sanctum')
     ->prefix('me/transactions')

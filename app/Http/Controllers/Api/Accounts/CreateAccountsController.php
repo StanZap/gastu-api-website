@@ -20,20 +20,18 @@ class CreateAccountsController extends Controller
     public function __invoke(Request $request): Response
     {
         $validated = $request->validate([
-            'title' => ['required', 'min:3'],
-            'description' => ['nullable', 'min:3'],
-            'provider_name' => ['required', 'min:1'],
+            'title' => ['sometimes', 'min:3'],
+            'description' => ['sometimes', 'nullable', 'min:3'],
+            'provider_name' => ['sometimes', 'min:1'],
             'amount' => ['sometimes', 'numeric', 'min:0'],
-            'currency' => ['required', new Enum(CurrencyEnum::class)],
-            'type' => ['required', new Enum(AccountTypeEnum::class)]
+            'currency' => ['sometimes', new Enum(CurrencyEnum::class)],
+            'type' => ['sometimes', new Enum(AccountTypeEnum::class)],
+            'owner_id' => ['sometimes', 'exists:teams,id'],
         ]);
 
         $account = Account::create([
             ...$validated,
-
-            'amount' => 0.00,
-            'owner_id' => auth()->id(),
-            'owner_type' => User::class,
+            'owner_type' => 'team',
         ]);
 
         return new Response([
