@@ -7,12 +7,25 @@ use App\Enums\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Malico\LaravelNanoid\Eloquent\InteractsWithNanoid;
 
 class Transaction extends Model
 {
     use HasFactory;
+    use InteractsWithNanoid;
 
     protected $fillable = ['amount', 'currency', 'subject', 'description', 'when', 'user_id', 'type', 'to_account_id', 'from_account_id'];
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(function (self $model): void {
+            $model->{$model->getKeyName()} = $model->generateNanoid();
+        });
+    }
 
     protected $casts = [
         'when' => 'datetime',
