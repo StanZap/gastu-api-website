@@ -58,11 +58,12 @@ return [
     */
 
     'features' => [
-        // Features::termsAndPrivacyPolicy(),
-        // Features::profilePhotos(),
-         Features::api(),
-        Features::teams(['invitations' => true]),
-        Features::accountDeletion(),
+//        Features::termsAndPrivacyPolicy(),
+        Features::profilePhotos(),
+        Features::api(),
+        // TODO: joining to a team should be done via invitations
+        Features::teams(['invitations' => false]),
+//        Features::accountDeletion(),
     ],
 
     /*
