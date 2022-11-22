@@ -11,7 +11,7 @@ class GetOneTransactionController extends Controller
 {
     public function __invoke(Transaction $transaction)
     {
-        $trx = $transaction->load(['fromAccount', 'toAccount']);
+        $trx = $transaction->load(['fromAccount', 'toAccount', 'attachments']);
 
         return new Response([
             'data' => $trx,

@@ -7,6 +7,7 @@ use App\Enums\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Malico\LaravelNanoid\Eloquent\InteractsWithNanoid;
 
 class Transaction extends Model
@@ -79,4 +80,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Account::class, 'to_account_id');
     }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddAttachmentController;
 use App\Http\Controllers\Api\Accounts\CreateAccountsController;
 use App\Http\Controllers\Api\Accounts\UpdateAccountController;
 use App\Http\Controllers\Api\Auth\GenerateTokenController;
@@ -30,7 +31,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')
     ->get('/me/profile', function (Request $request) {
         return new ProfileResource(auth()->user());
-//        return auth()->user();
     });
 
 Route::middleware('auth:sanctum')
@@ -40,7 +40,6 @@ Route::middleware('auth:sanctum')
         Route::get('', GetAccountListController::class);
         Route::get('{account}', GetOneAccountController::class);
         Route::patch('{account}', UpdateAccountController::class);
-
     });
 
 Route::middleware('auth:sanctum')
@@ -67,3 +66,8 @@ Route::prefix('auth')
             ->post('revoke-token', RevokeTokenController::class);
     });
 
+Route::middleware('auth:sanctum')
+    ->prefix('me/attachments')
+    ->group(function () {
+        Route::post('', AddAttachmentController::class);
+    });
