@@ -1,0 +1,14 @@
+{
+  "resources/js/panel/index.css": {
+    "file": "assets/index-c284965c.css",
+    "src": "resources/js/panel/index.css"
+  },
+  "resources/js/panel/index.tsx": {
+    "file": "assets/index-3cc6aa9b.js",
+    "src": "resources/js/panel/index.tsx",
+    "isEntry": true,
+    "css": [
+      "assets/index-c284965c.css"
+    ]
+  }
+}

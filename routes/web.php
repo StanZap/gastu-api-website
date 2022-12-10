@@ -22,9 +22,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/app', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })
+        ->name('dashboard');
 
-    Route::get('/app', fn() => redirect(env('FRONTEND_URL')));
+    Route::get('/app/{any}', function () {
+        return view('dashboard');
+    })
+        ->where('any', '.*');
 });
+
