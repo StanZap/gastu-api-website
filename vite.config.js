@@ -6,7 +6,11 @@ export default defineConfig({
     base: "/app/",
     plugins: [
         react(),
-        laravel(["resources/js/panel/index.tsx", "resources/js/app.js"]),
+        laravel([
+            "resources/js/panel/index.tsx",
+            "resources/css/app.css",
+            "resources/js/app.js",
+        ]),
     ],
     server: {
         strictPort: false,
