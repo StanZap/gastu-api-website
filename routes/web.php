@@ -13,21 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return redirect('/app/not-existing');
+//});
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/app', function () {
+    Route::get('/', function () {
         return view('dashboard');
     })
         ->name('dashboard');
 
-    Route::get('/app/{any}', function () {
+    Route::get('/{any}', function () {
         return view('dashboard');
     })
         ->where('any', '.*');
