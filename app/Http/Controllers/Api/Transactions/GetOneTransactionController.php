@@ -11,10 +11,18 @@ class GetOneTransactionController extends Controller
 {
     public function __invoke(Transaction $transaction)
     {
-        $trx = $transaction->load(['fromAccount', 'toAccount', 'attachments']);
+        $trx = $transaction->load([
+            "fromAccount",
+            "toAccount",
+            "attachments",
+            "team",
+        ]);
 
-        return new Response([
-            'data' => $trx,
-        ], ResponseAlias::HTTP_OK);
+        return new Response(
+            [
+                "data" => $trx,
+            ],
+            ResponseAlias::HTTP_OK
+        );
     }
 }

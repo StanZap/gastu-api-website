@@ -95,6 +95,11 @@ const TransactionDetails = () => {
                                 value={`${tx.to_account.title} / ${tx.to_account.owner?.name}`}
                             />
                         )}
+
+                        <DetailsItem
+                            label={t("fields.team") + ":"}
+                            value={tx.team?.name ?? "-"}
+                        />
                     </>
                 ) : (
                     <p>{t("transactionDetailsLoading")}</p>

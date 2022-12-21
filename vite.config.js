@@ -16,11 +16,11 @@ export default defineConfig({
             mode: "development",
             base: "/",
             manifest: {
-                name: "Gastu L3",
-                short_name: "Gastu L3",
-                theme_color: "green",
+                name: "Gastu",
+                short_name: "Gastu",
+                theme_color: "turquoise",
                 start_url: "/",
-                background_color: "green",
+                background_color: "turquoise",
                 display: "standalone",
                 dir: "./public",
                 icons: [

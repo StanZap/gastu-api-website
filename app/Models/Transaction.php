@@ -15,10 +15,21 @@ class Transaction extends Model
     use HasFactory;
     use InteractsWithNanoid;
 
-    protected $fillable = ['amount', 'currency', 'subject', 'description', 'when', 'user_id', 'type', 'to_account_id', 'from_account_id'];
+    protected $fillable = [
+        "amount",
+        "currency",
+        "subject",
+        "description",
+        "when",
+        "user_id",
+        "type",
+        "to_account_id",
+        "from_account_id",
+        "team_id",
+    ];
 
     public $incrementing = false;
-    protected $keyType = 'string';
+    protected $keyType = "string";
 
     protected static function boot(): void
     {
@@ -29,56 +40,56 @@ class Transaction extends Model
     }
 
     protected $casts = [
-        'when' => 'datetime',
-        'currency' => CurrencyEnum::class,
-        'type' => TransactionTypeEnum::class
+        "when" => "datetime",
+        "currency" => CurrencyEnum::class,
+        "type" => TransactionTypeEnum::class,
     ];
 
     public function scopeFilter($query, array $filters)
     {
-        if ($filters['search'] ?? false) {
-            $regex = '%' . $filters['search'] . '%';
+        if ($filters["search"] ?? false) {
+            $regex = "%" . $filters["search"] . "%";
             $query->where(
                 fn($q) => $q
-                    ->where('subject', 'like', $regex)
-                    ->orWhere('description', 'like', $regex)
+                    ->where("subject", "like", $regex)
+                    ->orWhere("description", "like", $regex)
             );
         }
 
-        if ($filters['type'] ?? false) {
-            $query->where('type', $filters['type']);
+        if ($filters["type"] ?? false) {
+            $query->where("type", $filters["type"]);
         }
 
-        $this->addFilter($query, $filters, 'amount');
+        $this->addFilter($query, $filters, "amount");
     }
 
     protected function addFilter($query, $filters, $filtrable)
     {
         if ($filters[$filtrable] ?? false) {
-            $query->where($filtrable, '=', doubleval($filters[$filtrable]));
-        } elseif ($filters[$filtrable . '>'] ?? false) {
+            $query->where($filtrable, "=", doubleval($filters[$filtrable]));
+        } elseif ($filters[$filtrable . ">"] ?? false) {
             $query->where(
                 $filtrable,
-                '>=',
-                doubleval($filters[$filtrable . '>'])
+                ">=",
+                doubleval($filters[$filtrable . ">"])
             );
-        } elseif ($filters[$filtrable . '<'] ?? false) {
+        } elseif ($filters[$filtrable . "<"] ?? false) {
             $query->where(
                 $filtrable,
-                '<=',
-                doubleval($filters[$filtrable . '<'])
+                "<=",
+                doubleval($filters[$filtrable . "<"])
             );
         }
     }
 
     public function fromAccount(): BelongsTo
     {
-        return $this->belongsTo(Account::class, 'from_account_id');
+        return $this->belongsTo(Account::class, "from_account_id");
     }
 
     public function toAccount(): BelongsTo
     {
-        return $this->belongsTo(Account::class, 'to_account_id');
+        return $this->belongsTo(Account::class, "to_account_id");
     }
 
     public function attachments(): HasMany
@@ -86,4 +97,8 @@ class Transaction extends Model
         return $this->hasMany(Attachment::class);
     }
 
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

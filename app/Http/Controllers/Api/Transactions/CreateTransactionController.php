@@ -38,9 +38,16 @@ class CreateTransactionController extends Controller
                 ])),
                 'exists:accounts,id'
             ],
+            'team_id' => ['required', 'exists:teams,id'],
         ]);
 
         $authUser = auth()->user();
+
+        // validate user belongs to provide team
+//        if($validated['team_id'] ?? false) {
+////            abort_if(!$authUser->belongsToTeam($validated['team_id']), Response::HTTP_FORBIDDEN);
+//        }
+
         $fromAccount = null;
         $toAccount = null;
         $teamIds = auth()->user()->allTeams()->pluck('id')->toArray();

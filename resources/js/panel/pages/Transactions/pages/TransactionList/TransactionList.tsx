@@ -8,11 +8,28 @@ import NoItems from "../../../../components/NoItem";
 import Loader from "../../../../components/Loader";
 // import { GeneralStats } from "../../../../components/Stats";
 import useTransactionListData from "../../../../hooks/useTransactionListData";
+import { useStore } from "../../../../store";
+import { useEffect, useState } from "react";
 
 export default function TransactionList() {
     const { isLoading, paginatedList, sort, searchParams } =
         useTransactionListData();
     const { t } = useTranslation();
+    const { profileData } = useStore((state) => ({
+        profileData: state.profileData,
+    }));
+    const [teamMap, setTeamMap] = useState({});
+
+    useEffect(() => {
+        if (!profileData?.allTeams) {
+            return;
+        }
+        const map = {};
+        profileData?.allTeams?.forEach((team) => {
+            map[team.id] = team.name;
+        });
+        setTeamMap(map);
+    }, [profileData]);
 
     return (
         <>
@@ -135,6 +152,12 @@ export default function TransactionList() {
                                                         {t("accounts")}
                                                     </th>
                                                     <th
+                                                        scope="col"
+                                                        className=" py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                                                    >
+                                                        {t("fields.team")}
+                                                    </th>
+                                                    <th
                                                         onClick={() =>
                                                             sort("created_at")
                                                         }
@@ -226,6 +249,14 @@ export default function TransactionList() {
                                                                         </div>
                                                                     )}
                                                                 </div>
+                                                            </td>
+                                                            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
+                                                                <span>
+                                                                    {teamMap?.[
+                                                                        item
+                                                                            .team_id
+                                                                    ] ?? "-"}
+                                                                </span>
                                                             </td>
                                                             <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
                                                                 {formatDateTime(

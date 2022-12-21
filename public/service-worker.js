@@ -5,7 +5,7 @@ console.log("... from service worker...");
 self.addEventListener("fetch", async (event) => {
     const url = new URL(event.request.url);
 
-    console.log(event.request.method, url.pathname);
+    // console.log(event.request.method, url.pathname);
     if (event.request.method === "POST" && url.pathname === "/share") {
         try {
             const req = event.request.clone();
