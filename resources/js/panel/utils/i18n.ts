@@ -20,6 +20,7 @@ i18n
         resources: {
             en: {
                 translation: {
+                    dashboard: "Dashboard",
                     source: "Source",
                     target: "Destination",
                     yourProfile: "Your profile",
@@ -88,7 +89,7 @@ i18n
                     invalidNumberError: "Value you introduced is not a number.",
                     increased: "Increased",
                     decreased: "Decreased",
-                    monthlyStatsCardHeading: "Statistics of ",
+                    monthlyStatsCardHeading: "Monthly Stats",
                     by: "by",
                     from: "from",
                     transactionDetails: "Transaction Details",
@@ -123,6 +124,7 @@ i18n
             },
             es: {
                 translation: {
+                    dashboard: "Inicio",
                     source: "Origen",
                     target: "Destino",
                     yourProfile: "Tu Perfil",
@@ -192,7 +194,7 @@ i18n
                     invalidNumberError: "Valor introducido no es un número.",
                     increased: "Incremento",
                     decreased: "Decremento",
-                    monthlyStatsCardHeading: "Estadísticas de ",
+                    monthlyStatsCardHeading: "Estadísticas Mensuales",
                     by: "por",
                     from: "de",
                     transactionDetails: "Detalles de Transacción",

@@ -49,7 +49,8 @@ export default function AppLayout({ children }) {
     const profileData = useProfileData();
 
     const [navItems] = useState<NavItemState[]>([
-        { name: t("transactions"), href: "/transactions", current: true },
+        { name: t("dashboard"), href: "/" },
+        { name: t("transactions"), href: "/transactions" },
         { name: t("accounts"), href: "/accounts" },
     ]);
     const autoDetectLang = localStorage.getItem("autoLang");

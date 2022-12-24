@@ -5,16 +5,7 @@ import useTransactionData from "../../../../hooks/useTransactionData";
 import { formatDateTime } from "../../../../utils/methods";
 import AttachmentGallery from "../../../../components/AttachmentMananagement";
 import AddAttachment from "../../../../components/AddAttachment";
-
-const DetailsItem = (props) => {
-    const { label, value, valClassNames } = props;
-    return (
-        <div className="flex flex-col space-y-1">
-            <span className="text-xs uppercase text-gray-500">{label}</span>
-            <div className={valClassNames + " text-xl"}>{value}</div>
-        </div>
-    );
-};
+import { DetailsItem } from "../../../../components/DetailsItem/DetailsItem";
 
 const TransactionDetails = () => {
     const { t } = useTranslation();
