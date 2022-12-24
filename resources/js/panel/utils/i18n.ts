@@ -120,6 +120,8 @@ i18n
                     },
                     goToTransactions: "Go to Transactions",
                     goToAccounts: "Go to Accounts",
+                    allStatsBtn: "All Stats",
+                    myStatsBtn: "Mine Only",
                 },
             },
             es: {
@@ -225,6 +227,8 @@ i18n
                     },
                     goToTransactions: "Ir a Transacciones",
                     goToAccounts: "Ir a Cuentas",
+                    allStatsBtn: "De todos",
+                    myStatsBtn: "Solo las mías",
                 },
             },
         },

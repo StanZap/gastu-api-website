@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../store";
-import { ParamsFiltersMap } from "../utils/types";
 import { fetchMonthlyStats } from "../services/StatsService";
+import { useSearchParams } from "react-router-dom";
 
-const useAccountListData = () => {
+const useMonthlyStats = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [fetchParams, setFetchParams] = useState<ParamsFiltersMap>();
     const { monthlyStats, setMonthlyStats } = useStore((state) => {
         return {
             monthlyStats: state.monthlyStats,
             setMonthlyStats: state.setMonthlyStats,
         };
     });
+    const [searhParams] = useSearchParams();
 
     const load = async () => {
         setIsLoading(true);
         try {
-            const resp = await fetchMonthlyStats();
-            console.log(resp.data);
+            const params = {};
+            if (searhParams.has("mode")) {
+                params["mode"] = searhParams.get("mode");
+            }
+
+            const resp = await fetchMonthlyStats(params);
             setMonthlyStats(resp?.data);
             setIsLoading(false);
         } catch (e) {
@@ -32,7 +36,7 @@ const useAccountListData = () => {
     useEffect(() => {
         if (isLoading) return;
         load();
-    }, [fetchParams]);
+    }, [searhParams]);
 
     useEffect(() => {
         if (monthlyStats?.data || isLoading) return;
@@ -42,4 +46,4 @@ const useAccountListData = () => {
     return { isLoading, monthlyStats };
 };
 
-export default useAccountListData;
+export default useMonthlyStats;

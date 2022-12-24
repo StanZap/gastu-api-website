@@ -13,9 +13,11 @@ const fetchGlobalStats = async (month) => {
     }
 };
 
-const fetchMonthlyStats = async () => {
+const fetchMonthlyStats = async (params) => {
     try {
-        const res = await httpClient.get("api/me/stats/monthly");
+        const res = await httpClient.get("api/me/stats/monthly", {
+            params,
+        });
         return res.data;
     } catch (e) {
         if (e.response.status === 401) handleLoginError();
