@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Transactions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,16 +12,29 @@ class GetTransactionsController extends Controller
     public function __invoke(Request $request)
     {
         $filters = request()->all($this->validWhereFilters());
-        $transactionItems = auth()->user()
-            ->transactions()
-            ->with(['fromAccount.owner', 'toAccount.owner'])
-            ->getQuery()
+        $teamIds = auth()
+            ->user()
+            ->allTeams()
+            ->pluck("id");
+
+        $query = Transaction::with([
+            "fromAccount.owner" => fn($q) => $q->select(["id", "name"]),
+            "toAccount.owner" => fn($q) => $q->select(["id", "name"]),
+            "user" => fn($q) => $q->select(["name", "id"]),
+            "team" => fn($q) => $q->select(["name", "id"]),
+        ])->whereIn("team_id", $teamIds); // this is important for privacy/security reasons
+
+        if ($request->has("scope") && $request->get("scope") === "mine") {
+            $query->where("user_id", auth()->id());
+        }
+
+        $transactionItems = $query
             ->filter($filters)
             ->orderBy(
-                request('orderBy', 'updated_at'),
-                request('orderDirection', 'desc')
+                request("orderBy", "updated_at"),
+                request("orderDirection", "desc")
             )
-            ->paginate($request->get('limit', 10));
+            ->paginate($request->get("limit", 10));
 
         return new Response($transactionItems, Response::HTTP_OK);
     }
@@ -28,16 +42,16 @@ class GetTransactionsController extends Controller
     public function validWhereFilters()
     {
         return [
-            'search',
-            'amount',
-            'amount>',
-            'amount<',
-            'currency',
-            'description',
-            'subject',
-            'when',
-            'type',
-            'currency'
+            "search",
+            "amount",
+            "amount>",
+            "amount<",
+            "currency",
+            "description",
+            "subject",
+            "when",
+            "type",
+            "currency",
         ];
     }
 }

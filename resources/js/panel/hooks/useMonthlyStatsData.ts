@@ -17,8 +17,8 @@ const useMonthlyStats = () => {
         setIsLoading(true);
         try {
             const params = {};
-            if (searhParams.has("mode")) {
-                params["mode"] = searhParams.get("mode");
+            if (searhParams.has("scope")) {
+                params["scope"] = searhParams.get("scope");
             }
 
             const resp = await fetchMonthlyStats(params);

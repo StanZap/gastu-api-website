@@ -5,55 +5,17 @@ import useMonthlyStatsData from "../../hooks/useMonthlyStatsData";
 import Loader from "../../components/Loader";
 import { useTranslation } from "react-i18next";
 import { TransactionType } from "../../utils/enums";
-import { useSearchParams } from "react-router-dom";
+import ScopeSwitch from "../../components/ScopeSwitch";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();
-    const [searchParams, setSearchParams] = useSearchParams();
     const { isLoading, monthlyStats } = useMonthlyStatsData();
-
-    const handleMineStats = () => {
-        setSearchParams({ mode: "mine" });
-    };
-
-    const handleAllStats = () => {
-        searchParams.delete("mode");
-        setSearchParams(searchParams);
-    };
-
-    useEffect(() => {
-        if (searchParams.get("mode") === "mine") {
-        }
-    }, [searchParams]);
 
     return (
         <AppLayout>
-            <div className="flex justify-between">
-                <h1 className="mb-5 text-2xl">
-                    {t("monthlyStatsCardHeading")}
-                </h1>
-                <div className="">
-                    <button
-                        className={`px-4 py-2 text-sm font-medium rounded-r-none text-white rounded-md hover:opacity-75 ${
-                            searchParams.get("mode") === "mine"
-                                ? "bg-blue-500"
-                                : "bg-blue-300 text-gray-900"
-                        }`}
-                        onClick={handleMineStats}
-                    >
-                        {t("myStatsBtn")}
-                    </button>
-                    <button
-                        className={`px-4 py-2 text-sm font-medium rounded-l-none text-white rounded-md  hover:opacity-75 ${
-                            searchParams.get("mode") === "mine"
-                                ? "bg-blue-300 text-gray-900"
-                                : "bg-blue-500"
-                        }`}
-                        onClick={handleAllStats}
-                    >
-                        {t("allStatsBtn")}
-                    </button>
-                </div>
+            <div className="mb-5 flex justify-between flex-col md:flex-row">
+                <h1 className="text-2xl">{t("monthlyStatsCardHeading")}</h1>
+                <ScopeSwitch />
             </div>
             {isLoading ? (
                 <Loader />

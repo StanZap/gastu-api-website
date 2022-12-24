@@ -30,7 +30,7 @@ class GetMonthlyStatsController extends Controller
             ->whereBetween("when", [$start, $end])
             ->whereIn("team_id", $myTeamIds);
 
-        if ($request->has("mode") && $request->get("mode") === "mine") {
+        if ($request->has("scope") && $request->get("scope") === "mine") {
             $query->where("user_id", auth()->id());
         }
 

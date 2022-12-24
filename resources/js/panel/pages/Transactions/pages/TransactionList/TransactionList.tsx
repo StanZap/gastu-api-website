@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import { EyeIcon, PlusIcon } from "@heroicons/react/20/solid";
 import NoItems from "../../../../components/NoItem";
 import Loader from "../../../../components/Loader";
-// import { GeneralStats } from "../../../../components/Stats";
 import useTransactionListData from "../../../../hooks/useTransactionListData";
 import { useStore } from "../../../../store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import ScopeSwitch from "../../../../components/ScopeSwitch";
 
 export default function TransactionList() {
     const { isLoading, paginatedList, sort, searchParams } =
@@ -18,17 +18,11 @@ export default function TransactionList() {
     const { profileData } = useStore((state) => ({
         profileData: state.profileData,
     }));
-    const [teamMap, setTeamMap] = useState({});
 
     useEffect(() => {
         if (!profileData?.allTeams) {
             return;
         }
-        const map = {};
-        profileData?.allTeams?.forEach((team) => {
-            map[team.id] = team.name;
-        });
-        setTeamMap(map);
     }, [profileData]);
 
     return (
@@ -43,21 +37,32 @@ export default function TransactionList() {
                         <h1 className="text-xl font-semibold text-gray-900">
                             {t("transactions")}
                         </h1>
-                        <p className="mt-2 text-sm text-gray-700">
+                        <p className="md:mt-2 text-sm text-gray-700">
                             {t("transactionListMessage")}
                         </p>
                     </div>
-                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                    <div className="hidden lg:flex mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-2 items-center">
                         <Link
                             to={"./add"}
-                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                            className="h-9 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
                         >
                             <PlusIcon className="mr-1 h-4 w-4" />
-                            <span className="hidden sm:block">
-                                {t("registerTransactionLink")}
-                            </span>
+                            <span>{t("registerTransactionLink")}</span>
                         </Link>
+                        <ScopeSwitch className="" />
                     </div>
+                </div>
+                <div className="flex lg:hidden mt-4 space-x-1 justify-between">
+                    <Link
+                        to={"./add"}
+                        className="h-9 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                    >
+                        <PlusIcon className="mr-1 h-4 w-4" />
+                        <span className="hidden xs:block">
+                            {t("registerTransactionLinkShort")}
+                        </span>
+                    </Link>
+                    <ScopeSwitch className="" />
                 </div>
                 {searchParams && (
                     <Pagination
@@ -158,6 +163,12 @@ export default function TransactionList() {
                                                         {t("fields.team")}
                                                     </th>
                                                     <th
+                                                        scope="col"
+                                                        className=" py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                                                    >
+                                                        {t("fields.user")}
+                                                    </th>
+                                                    <th
                                                         onClick={() =>
                                                             sort("created_at")
                                                         }
@@ -252,10 +263,20 @@ export default function TransactionList() {
                                                             </td>
                                                             <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
                                                                 <span>
-                                                                    {teamMap?.[
+                                                                    {
                                                                         item
-                                                                            .team_id
-                                                                    ] ?? "-"}
+                                                                            ?.team
+                                                                            ?.name
+                                                                    }
+                                                                </span>
+                                                            </td>
+                                                            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
+                                                                <span>
+                                                                    {
+                                                                        item
+                                                                            ?.user
+                                                                            ?.name
+                                                                    }
                                                                 </span>
                                                             </td>
                                                             <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">

@@ -37,6 +37,7 @@ i18n
                     transactionListMessage:
                         "The history of your expenses, income and transfers.",
                     registerTransactionLink: "Register Transaction",
+                    registerTransactionLinkShort: "Transaction",
                     addAccountLink: "Add Account",
                     searchPlaceholder: "Search: subject or description",
                     editing: "Editing",
@@ -72,6 +73,7 @@ i18n
                         accountType: "Account Type",
                         attachments: "Attachments",
                         team: "Team",
+                        user: "User",
                     },
                     pagination: {
                         showing: "Showing",
@@ -143,6 +145,7 @@ i18n
                     transactionListMessage:
                         "El hisorial de gastos, ingresos y transferencias",
                     registerTransactionLink: "Registrar Transacción",
+                    registerTransactionLinkShort: "Transacción",
                     addAccountLink: "Agregar Cuenta",
                     searchPlaceholder:
                         "Buscar: descripción corta o observaciones",
@@ -179,6 +182,7 @@ i18n
                         accountType: "Tipo de Cuenta",
                         attachments: "Adjuntos",
                         team: "Equipo",
+                        user: "Usuario",
                     },
                     pagination: {
                         showing: "Mostrando",
