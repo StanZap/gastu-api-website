@@ -6,10 +6,17 @@ import Loader from "../../components/Loader";
 import { useTranslation } from "react-i18next";
 import { TransactionType } from "../../utils/enums";
 import ScopeSwitch from "../../components/ScopeSwitch";
+import { StoreState } from "../../store/useStore";
+import BottomDrawer from "../../components/BottomDrawer";
+import TransactionListSummary from "../../components/TransactionListSummary/TransactionListSummary";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();
     const { isLoading, monthlyStats } = useMonthlyStatsData();
+    const { isDrawerOpen, setIsDrawerOpen } = useStore((state) => ({
+        isDrawerOpen: state.isDrawerOpen,
+        setIsDrawerOpen: state.setIsDrawerOpen,
+    }));
 
     return (
         <AppLayout>
@@ -41,33 +48,45 @@ const MonthlyStatsList = () => {
                         )}
                 </div>
             )}
+            <BottomDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}>
+                <TransactionListSummary />
+            </BottomDrawer>
         </AppLayout>
     );
 };
 
 const TxItem = ({ txType, txTypeStat }) => {
     const { t } = useTranslation();
+    const { setIsDrawerOpen } = useStore((state) => ({
+        setIsDrawerOpen: state.setIsDrawerOpen,
+    }));
 
     return (
-        <div className="flex flex-col space-y-1">
-            <h4 className="text-xs uppercase">{t(txType)}</h4>
-            <div className="flex flex-col bg-100 space-y-1">
-                {Object.entries(txTypeStat)?.map(([currency, valObj]) => (
-                    <div key={currency} className="flex space-x-1">
-                        {valObj?.[0].type === TransactionType.Income ? (
-                            <span className="text-green-700 text-2xl font-bold">
-                                {valObj?.[0]?.amount}
-                            </span>
-                        ) : (
-                            <span className="text-red-700 text-2xl font-bold">
-                                {valObj?.[0]?.amount}
-                            </span>
-                        )}
-                        <span className="">{currency}</span>
-                    </div>
-                ))}
+        <>
+            <div className="flex flex-col space-y-1">
+                <h4 className="text-xs uppercase">{t(txType)}</h4>
+                <div className="flex flex-col bg-100 space-y-1">
+                    {Object.entries(txTypeStat)?.map(([currency, valObj]) => (
+                        <div
+                            key={currency}
+                            className="flex space-x-1"
+                            onClick={() => setIsDrawerOpen(true, valObj?.[0])}
+                        >
+                            {valObj?.[0].type === TransactionType.Income ? (
+                                <span className="text-green-700 text-2xl font-bold">
+                                    {valObj?.[0]?.amount}
+                                </span>
+                            ) : (
+                                <span className="text-red-700 text-2xl font-bold">
+                                    {valObj?.[0]?.amount}
+                                </span>
+                            )}
+                            <span className="">{currency}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
@@ -108,20 +127,22 @@ const MonthItem = ({ monthName, monthStat }) => {
     }, [profileData]);
 
     return (
-        <div className="flex flex-col justify-between space-y-3">
-            <h2 className="text-xl w-full text-center bg-gray-100 py-2">
-                {monthName}
-            </h2>
-            <div className="flex flex-col space-y-2">
-                {Object.entries(monthStat)?.map(([teamId, teamStat]) => (
-                    <TeamItem
-                        key={teamId}
-                        teamStat={teamStat}
-                        teamName={teamMap?.[teamId]}
-                    />
-                ))}
+        <>
+            <div className="flex flex-col justify-between space-y-3">
+                <h2 className="text-xl w-full text-center bg-gray-100 py-2">
+                    {monthName}
+                </h2>
+                <div className="flex flex-col space-y-2">
+                    {Object.entries(monthStat)?.map(([teamId, teamStat]) => (
+                        <TeamItem
+                            key={teamId}
+                            teamStat={teamStat}
+                            teamName={teamMap?.[teamId]}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

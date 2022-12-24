@@ -28,6 +28,22 @@ class GetTransactionsController extends Controller
             $query->where("user_id", auth()->id());
         }
 
+        if ($request->has("teamId")) {
+            $query->where("team_id", $request->get("teamId"));
+        }
+
+        if ($request->has("currency")) {
+            $query->where("currency", $request->get("currency"));
+        }
+
+        if ($request->has("month")) {
+            $query->whereMonth("when", +$request->get("month"));
+        }
+
+        if ($request->has("year")) {
+            $query->whereYear("when", +$request->get("year"));
+        }
+
         $transactionItems = $query
             ->filter($filters)
             ->orderBy(

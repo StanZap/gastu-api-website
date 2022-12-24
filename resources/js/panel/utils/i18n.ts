@@ -124,6 +124,7 @@ i18n
                     goToAccounts: "Go to Accounts",
                     allStatsBtn: "All Stats",
                     myStatsBtn: "Mine Only",
+                    noTransactions: "No Transactions to show",
                 },
             },
             es: {
@@ -233,6 +234,7 @@ i18n
                     goToAccounts: "Ir a Cuentas",
                     allStatsBtn: "De todos",
                     myStatsBtn: "Solo las mías",
+                    noTransactions: "Sin transacciones",
                 },
             },
         },

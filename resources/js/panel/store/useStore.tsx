@@ -24,6 +24,9 @@ interface StoreState {
     setTransactionData: Function;
     monthlyStats: DataList<StatsItemGroupByMonth>;
     setMonthlyStats: Function;
+    setIsDrawerOpen: (isOpen: boolean, contextData: any) => void;
+    isDrawerOpen: boolean;
+    drawerContext: any;
 }
 
 // @ts-ignore
@@ -86,6 +89,16 @@ const useStore = create<StoreState>((set) => ({
         set(() => {
             return {
                 monthlyStats,
+            };
+        });
+    },
+    isDrawerOpen: false,
+    drawerContext: null,
+    setIsDrawerOpen: (isOpen, contextData) => {
+        set(() => {
+            return {
+                isDrawerOpen: isOpen,
+                drawerContext: contextData,
             };
         });
     },
