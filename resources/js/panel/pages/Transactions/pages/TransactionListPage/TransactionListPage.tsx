@@ -10,6 +10,9 @@ import { useEffect } from "react";
 import ScopeSwitch from "../../../../components/ScopeSwitch";
 import TransactionsTable from "../../components/TransactionsTable";
 import TransactionList from "../../components/TransactionList";
+import ListViewSwitch, {
+    ListViewTypeEnum,
+} from "../../../../components/ListViewSwitch";
 
 export default function TransactionListPage() {
     const { isLoading, paginatedList, sort, searchParams } =
@@ -18,6 +21,14 @@ export default function TransactionListPage() {
     const { profileData } = useStore((state) => ({
         profileData: state.profileData,
     }));
+
+    const isTableView = () =>
+        searchParams.get("view") === ListViewTypeEnum.TABLE;
+    const isGridView = () => searchParams.get("view") === ListViewTypeEnum.GRID;
+    const isListView = () => {
+        const view = searchParams.get("view");
+        return !view || view === ListViewTypeEnum.LIST;
+    };
 
     useEffect(() => {
         if (!profileData?.allTeams) {
@@ -49,7 +60,8 @@ export default function TransactionListPage() {
                             <PlusIcon className="mr-1 h-4 w-4" />
                             <span>{t("registerTransactionLink")}</span>
                         </Link>
-                        <ScopeSwitch className="" />
+                        <ListViewSwitch />
+                        <ScopeSwitch />
                     </div>
                 </div>
                 <div className="flex lg:hidden mt-4 space-x-1 justify-between">
@@ -83,15 +95,36 @@ export default function TransactionListPage() {
                             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                     <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                                        {/*<TransactionsTable*/}
-                                        {/*    transactions={paginatedList?.data}*/}
-                                        {/*    sort={sort}*/}
-                                        {/*/>*/}
-                                        <TransactionList
-                                            transactions={
-                                                paginatedList?.data || []
-                                            }
-                                        />
+                                        {isTableView() ? (
+                                            <TransactionsTable
+                                                transactions={
+                                                    paginatedList?.data
+                                                }
+                                                sort={sort}
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {isGridView() ? (
+                                            <TransactionList
+                                                className="grid grid-cols-3 grid-flow-row gap-2"
+                                                withBorders={true}
+                                                transactions={
+                                                    paginatedList?.data || []
+                                                }
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {isListView() ? (
+                                            <TransactionList
+                                                transactions={
+                                                    paginatedList?.data || []
+                                                }
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
                                     </div>
                                 </div>
                             </div>

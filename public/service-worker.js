@@ -1,7 +1,5 @@
 // import { registerRoute } from "workbox-routing";
 
-console.log("... from service worker...");
-
 self.addEventListener("fetch", async (event) => {
     const url = new URL(event.request.url);
 

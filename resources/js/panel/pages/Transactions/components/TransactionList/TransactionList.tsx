@@ -4,15 +4,21 @@ import TransactionListItem from "../TransactionListItem/TransactionListItem";
 
 interface TransactionListProps {
     transactions: Transaction[];
+    className?: string;
+    withBorders?: boolean;
 }
 
 const TransactionList: FC<TransactionListProps> = (props) => {
-    const { transactions } = props;
+    const { transactions, className = "", withBorders = false } = props;
 
+    // flex flex-col
     return (
-        <div className="flex flex-col">
+        <div className={className + ""}>
             {transactions.map((tx) => (
                 <TransactionListItem
+                    classNames={
+                        withBorders ? "border border-solid border-gray-100" : ""
+                    }
                     key={tx.id}
                     transaction={tx}
                     showTeam={true}

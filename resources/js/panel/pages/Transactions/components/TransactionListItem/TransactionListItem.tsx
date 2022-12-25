@@ -7,16 +7,21 @@ interface TransactionListItemProps {
     transaction: Transaction;
     showTeam: boolean;
     showAccount: boolean;
+
+    classNames?: string;
 }
 
 const TransactionListItem: RC<TransactionListItemProps> = (props) => {
-    const { transaction: tx, showTeam, showAccount } = props;
+    const { transaction: tx, showTeam, showAccount, classNames = "" } = props;
     const { t } = useTranslation();
 
     return (
         <NavLink
             to={`/transactions/${tx.id}/details`}
-            className="px-8 py-3 even:bg-gray-100 flex flex-col space-y-0 capitalize"
+            className={
+                classNames +
+                " px-8 py-3 even:bg-gray-100 flex flex-col space-y-0 capitalize"
+            }
         >
             <h3>{tx.subject}</h3>
             <div className="space-x-1">
