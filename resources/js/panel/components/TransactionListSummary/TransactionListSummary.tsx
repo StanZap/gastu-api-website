@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useStore } from "../../store";
 import Loader from "../Loader";
-import { formatDate } from "../../utils/methods";
-import { NavLink } from "react-router-dom";
+import TransactionListItem from "../TransactionListItem/TransactionListItem";
 
 const TransactionListSummary = () => {
     const { stat, teams } = useStore((state) => ({
@@ -43,25 +42,7 @@ const TransactionListSummary = () => {
                 <h1 className="px-8 uppercase text-md ">{getTitle()}</h1>
                 <div className="flex flex-col space-y-3 max-h-96 overflow-y-auto">
                     {transactionList.map((tx) => (
-                        <NavLink
-                            to={`../transactions/${tx.id}/details`}
-                            key={tx.id}
-                            className="px-8 py-3 even:bg-gray-100 flex flex-col space-y-0"
-                        >
-                            <h3>{tx.subject}</h3>
-                            <div className="space-x-1">
-                                <span className="text-3xl">{tx.amount}</span>
-                                <span className="text-xl">{tx.currency}</span>
-                            </div>
-                            <div className="flex space-x-1 items-center">
-                                <span className="text-sm text-gray-700">
-                                    On {formatDate(tx.when)}
-                                </span>
-                                <span>
-                                    {tx.user?.name ? `By ${tx.user.name}` : ""}
-                                </span>
-                            </div>
-                        </NavLink>
+                        <TransactionListItem key={tx.id} tx={tx} />
                     ))}
                     {transactionList.length === 0 ? (
                         <p className="pt-4 text-gray-700">

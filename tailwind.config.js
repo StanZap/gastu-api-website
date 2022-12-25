@@ -8,7 +8,6 @@ module.exports = {
         "./resources/views/**/*.blade.php",
         "./resources/js/**/*.{js,ts,jsx,tsx}",
     ],
-
     theme: {
         extend: {
             fontFamily: {
@@ -19,7 +18,6 @@ module.exports = {
             },
         },
     },
-
     plugins: [
         require("@tailwindcss/forms"),
         require("@tailwindcss/typography"),

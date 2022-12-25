@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { fetchTransactions } from "../services/TransactionService";
+import { Transaction } from "../pages/Transactions/types";
 
 const useTransactionListSummary = (filters) => {
-    const [transactionList, setTransactionList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [transactionList, setTransactionList] = useState<Transaction[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const load = async () => {
         try {
