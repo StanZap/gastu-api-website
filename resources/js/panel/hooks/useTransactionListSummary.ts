@@ -8,7 +8,6 @@ const useTransactionListSummary = (filters) => {
 
     const load = async () => {
         try {
-            console.log(filters);
             const resp = await fetchTransactions(filters);
             setTransactionList(resp.data);
         } catch (e) {

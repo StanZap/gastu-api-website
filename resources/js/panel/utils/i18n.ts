@@ -74,6 +74,7 @@ i18n
                         attachments: "Attachments",
                         team: "Team",
                         user: "User",
+                        account: "Account",
                     },
                     pagination: {
                         showing: "Showing",
@@ -125,6 +126,7 @@ i18n
                     allStatsBtn: "All Stats",
                     myStatsBtn: "Mine Only",
                     noTransactions: "No Transactions to show",
+                    by: "Por",
                 },
             },
             es: {
@@ -184,6 +186,7 @@ i18n
                         attachments: "Adjuntos",
                         team: "Equipo",
                         user: "Usuario",
+                        account: "Cuenta",
                     },
                     pagination: {
                         showing: "Mostrando",
@@ -235,6 +238,7 @@ i18n
                     allStatsBtn: "De todos",
                     myStatsBtn: "Solo las mías",
                     noTransactions: "Sin transacciones",
+                    by: "By",
                 },
             },
         },

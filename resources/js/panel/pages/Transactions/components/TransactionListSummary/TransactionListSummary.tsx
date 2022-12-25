@@ -1,8 +1,8 @@
-import useTransactionListSummary from "../../hooks/useTransactionListSummary";
+import useTransactionListSummary from "../../../../hooks/useTransactionListSummary";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { useStore } from "../../store";
-import Loader from "../Loader";
+import { useStore } from "../../../../store";
+import Loader from "../../../../components/Loader";
 import TransactionListItem from "../TransactionListItem/TransactionListItem";
 
 const TransactionListSummary = () => {
@@ -42,7 +42,7 @@ const TransactionListSummary = () => {
                 <h1 className="px-8 uppercase text-md ">{getTitle()}</h1>
                 <div className="flex flex-col space-y-3 max-h-96 overflow-y-auto">
                     {transactionList.map((tx) => (
-                        <TransactionListItem key={tx.id} tx={tx} />
+                        <TransactionListItem key={tx.id} transaction={tx} />
                     ))}
                     {transactionList.length === 0 ? (
                         <p className="pt-4 text-gray-700">

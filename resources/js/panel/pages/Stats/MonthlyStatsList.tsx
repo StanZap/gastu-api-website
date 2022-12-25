@@ -8,7 +8,7 @@ import { TransactionType } from "../../utils/enums";
 import ScopeSwitch from "../../components/ScopeSwitch";
 import { StoreState } from "../../store/useStore";
 import BottomDrawer from "../../components/BottomDrawer";
-import TransactionListSummary from "../../components/TransactionListSummary/TransactionListSummary";
+import TransactionListSummary from "../Transactions/components/TransactionListSummary/TransactionListSummary";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();

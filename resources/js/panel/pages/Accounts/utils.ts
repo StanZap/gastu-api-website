@@ -39,7 +39,6 @@ export const getAllParams = (searchParams) => {
         params.amount = searchParams.get("type");
     }
 
-    console.log(searchParams.get("scope"));
     if (searchParams.get("scope")) {
         params.scope = searchParams.get("scope");
     }
