@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import { TransactionType } from "../../utils/enums";
 import ScopeSwitch from "../../components/ScopeSwitch";
 import { StoreState } from "../../store/useStore";
-import BottomDrawer from "../../components/BottomDrawer";
 import TransactionListSummary from "../Transactions/components/TransactionListSummary/TransactionListSummary";
+import Modal from "../../components/Modal";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();
@@ -48,9 +48,9 @@ const MonthlyStatsList = () => {
                         )}
                 </div>
             )}
-            <BottomDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}>
+            <Modal isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}>
                 <TransactionListSummary />
-            </BottomDrawer>
+            </Modal>
         </AppLayout>
     );
 };

@@ -1,6 +1,6 @@
 import { Transition } from "@headlessui/react";
 
-const BottomDrawer = ({ isOpen, setIsOpen, children }) => {
+const BottomDrawer = ({ isOpen, setIsOpen, children, className = "" }) => {
     const hide = () => {
         setIsOpen(false);
     };
@@ -21,7 +21,10 @@ const BottomDrawer = ({ isOpen, setIsOpen, children }) => {
                 leave="transition ease-in duration-150"
                 leaveFrom="transform translate-y-0 opacity-100"
                 leaveTo="transform translate-y-96 opacity-45"
-                className="w-full fixed rounded-t-3xl bottom-0 left-0 bg-slate-200 shadow-2xl min-h-16"
+                className={
+                    className +
+                    " w-full fixed rounded-t-3xl bottom-0 left-0 bg-slate-200 shadow-2xl min-h-16"
+                }
             >
                 {children}
             </Transition>

@@ -11,7 +11,6 @@ interface TransactionListProps {
 const TransactionList: FC<TransactionListProps> = (props) => {
     const { transactions, className = "", withBorders = false } = props;
 
-    // flex flex-col
     return (
         <div className={className + ""}>
             {transactions.map((tx) => (
