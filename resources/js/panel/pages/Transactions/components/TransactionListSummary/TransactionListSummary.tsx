@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../../store";
 import Loader from "../../../../components/Loader";
 import TransactionListItem from "../TransactionListItem/TransactionListItem";
+import { useSearchParams } from "react-router-dom";
 
 const TransactionListSummary = () => {
     const { stat, teams } = useStore((state) => ({
@@ -13,6 +14,7 @@ const TransactionListSummary = () => {
     const { t } = useTranslation();
     const [params, setParams] = useState(null);
     const { isLoading, transactionList } = useTransactionListSummary(params);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         if (!stat) return;
@@ -23,6 +25,7 @@ const TransactionListSummary = () => {
             type: stat.type,
             teamId: stat.team_id,
             currency: stat.currency,
+            scope: searchParams.get("scope", undefined),
         });
     }, [stat]);
 
