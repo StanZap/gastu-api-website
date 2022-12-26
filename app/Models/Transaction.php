@@ -23,8 +23,7 @@ class Transaction extends Model
         "when",
         "user_id",
         "type",
-        "to_account_id",
-        "from_account_id",
+        "account_id",
         "team_id",
     ];
 
@@ -82,14 +81,9 @@ class Transaction extends Model
         }
     }
 
-    public function fromAccount(): BelongsTo
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(Account::class, "from_account_id");
-    }
-
-    public function toAccount(): BelongsTo
-    {
-        return $this->belongsTo(Account::class, "to_account_id");
+        return $this->belongsTo(Account::class, "account_id");
     }
 
     public function attachments(): HasMany

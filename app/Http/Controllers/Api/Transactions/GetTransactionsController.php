@@ -18,7 +18,7 @@ class GetTransactionsController extends Controller
             ->pluck("id");
 
         $query = Transaction::with([
-            "fromAccount.owner" => fn($q) => $q->select(["id", "name"]),
+            "account.owner" => fn($q) => $q->select(["id", "name"]),
             "user" => fn($q) => $q->select(["name", "id"]),
             "team" => fn($q) => $q->select(["name", "id"]),
         ])->whereIn("team_id", $teamIds); // this is important for privacy/security reasons

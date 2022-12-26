@@ -17,7 +17,7 @@ enum FieldTypesEnum {
     AMOUNT = "amount",
     CURRENCY = "currency",
     DESCRIPTION = "description",
-    ACCOUNT = "from_account_id",
+    ACCOUNT = "account_id",
     TEAM = "team_id",
     WHEN = "when",
     TYPE = "type",
@@ -148,7 +148,7 @@ const TransactionEdit = ({
                         options={options}
                         onChange={handleChange}
                         value={value}
-                        errors={errorData?.from_account_id}
+                        errors={errorData?.account_id}
                     />
                 )}
 

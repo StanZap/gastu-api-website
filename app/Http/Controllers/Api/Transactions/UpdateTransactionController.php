@@ -23,7 +23,7 @@ class UpdateTransactionController extends Controller
             "description" => ["sometimes", "min:3"],
             "when" => ["sometimes", "date:Y-m-d"],
             "team_id" => ["sometimes", "exists:teams,id"],
-            "from_account_id" => ["sometimes" => "exists:accounts,id"],
+            "account_id" => ["sometimes" => "exists:accounts,id"],
             "type" => ["sometimes", new Enum(TransactionTypeEnum::class)],
         ]);
 
@@ -39,9 +39,11 @@ class UpdateTransactionController extends Controller
         }
 
         if ($request->has("account_id")) {
-            $accounts = $currentUser->teamAccounts;
             abort_if(
-                !$accounts->contains($validated["from_account_id"]),
+                $currentUser
+                    ->teamAccounts()
+                    ->where("id", $validated["account_id"])
+                    ->count() === 0,
                 Response::HTTP_FORBIDDEN
             );
         }

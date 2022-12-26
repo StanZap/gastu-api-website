@@ -9,12 +9,10 @@ export interface Transaction {
     currency: string;
     user_id: string;
     type: string;
-    from_account_id: number;
-    to_account_id: number;
+    account_id: number;
     created_at: string;
     updated_at: string;
-    from_account?: Account;
-    to_account?: Account;
+    account?: Account;
     attachments?: Attachment[];
     team_id?: string;
 }

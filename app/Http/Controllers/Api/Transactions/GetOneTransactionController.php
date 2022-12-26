@@ -12,7 +12,7 @@ class GetOneTransactionController extends Controller
     public function __invoke(Transaction $transaction)
     {
         $trx = $transaction->load([
-            "fromAccount.owner" => fn($q) => $q->select(["id", "name"]),
+            "account.owner" => fn($q) => $q->select(["id", "name"]),
             "attachments",
             "team",
         ]);

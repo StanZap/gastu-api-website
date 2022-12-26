@@ -49,7 +49,7 @@ const TransactionDetails = () => {
                         />
 
                         <DetailsItem
-                            label={t("fields.amount") + ":"}
+                            label={t("fields.currency") + ":"}
                             valClassNames="flex items-center space-x-2"
                             value={tx.currency}
                             showEdit={true}
@@ -70,6 +70,8 @@ const TransactionDetails = () => {
                         <DetailsItem
                             label={t("fields.when") + ":"}
                             value={formatDate(dayjs(tx.when))}
+                            showEdit={true}
+                            onEditClick={() => setIsShowingTxEditModal("when")}
                         />
 
                         <DetailsItem
@@ -96,13 +98,13 @@ const TransactionDetails = () => {
                             }
                         />
 
-                        {tx.from_account && (
+                        {tx.account && (
                             <DetailsItem
                                 label={t("fields.account") + ":"}
-                                value={`${tx.from_account.title} (${tx.from_account.provider_name})`}
+                                value={`${tx.account.title} (${tx.account.provider_name})`}
                                 showEdit={true}
                                 onEditClick={() =>
-                                    setIsShowingTxEditModal("from_account_id")
+                                    setIsShowingTxEditModal("account_id")
                                 }
                             />
                         )}

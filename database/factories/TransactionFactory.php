@@ -32,24 +32,14 @@ class TransactionFactory extends Factory
             ->subDays(rand(0, 30));
         $type = TransactionTypeEnum::random()->value;
 
-        $fromAccount = null;
+        $account = null;
         if (
             in_array($type, [
                 TransactionTypeEnum::EXPENSE,
-                TransactionTypeEnum::TRANSFER,
-            ])
-        ) {
-            $fromAccount = Account::factory();
-        }
-
-        $toAccount = null;
-        if (
-            in_array($type, [
                 TransactionTypeEnum::INCOME,
-                TransactionTypeEnum::TRANSFER,
             ])
         ) {
-            $toAccount = Account::factory();
+            $account = Account::factory();
         }
 
         return [
@@ -60,8 +50,7 @@ class TransactionFactory extends Factory
             "user_id" => User::factory(),
             "when" => $randomDate,
             "type" => $type,
-            "from_account_id" => $fromAccount,
-            "to_account_id" => $toAccount,
+            "account_id" => $account,
             "team_id" => Team::factory(),
         ];
     }

@@ -33,14 +33,8 @@ const RegisterTransaction = () => {
     });
     const [description, setDescription] = useState("");
     const now = dayjs().format("YYYY-MM-DDTHH:mm:ss");
-    const [sourceAccountId, setSourceAccountId] = useState("");
-    const [targetAccountId, setTargetAccountId] = useState("");
-    const [validSourceAccounts, setValidSourceAccounts] = useState<
-        SelectableOption[]
-    >([]);
-    const [validTargetAccounts, setValidTargetAccounts] = useState<
-        SelectableOption[]
-    >([]);
+    const [accountId, setAccountId] = useState("");
+    const [validAccounts, setValidAccounts] = useState<SelectableOption[]>([]);
     const [when, setWhen] = useState(now);
     const [transactionType, setTransactioType] = useState("");
     const [teamId, setTeamId] = useState("");
@@ -51,36 +45,14 @@ const RegisterTransaction = () => {
     const { t } = useTranslation();
 
     const validate = () => {
-        if (transactionType === TransactionType.Income) {
-            return !!(
-                subject &&
-                currencyAmount.amount &&
-                currencyAmount.currency &&
-                when &&
-                targetAccountId &&
-                teamId
-            );
-        } else if (transactionType === TransactionType.Expense) {
-            return !!(
-                subject &&
-                currencyAmount.amount &&
-                currencyAmount.currency &&
-                when &&
-                sourceAccountId &&
-                teamId
-            );
-        } else if (transactionType === TransactionType.Transfer) {
-            return !!(
-                subject &&
-                currencyAmount.amount &&
-                currencyAmount.currency &&
-                when &&
-                sourceAccountId &&
-                targetAccountId &&
-                teamId
-            );
-        }
-        return false;
+        return !!(
+            subject &&
+            currencyAmount.amount &&
+            currencyAmount.currency &&
+            when &&
+            accountId &&
+            teamId
+        );
     };
     const [isValid, setIsValid] = useState(false);
 
@@ -94,8 +66,7 @@ const RegisterTransaction = () => {
             currency: currencyAmount.currency,
             when: dayjs(when).format("YYYY-MM-DDTHH:mm:ss"),
             type: transactionType,
-            from_account_id: sourceAccountId || undefined,
-            to_account_id: targetAccountId || undefined,
+            account_id: accountId || undefined,
             team_id: +teamId ?? undefined,
         });
 
@@ -143,11 +114,8 @@ const RegisterTransaction = () => {
         setTeamId(value);
     };
 
-    const handleSourceAccountIdChange = (value) => {
-        setSourceAccountId(value);
-    };
-    const handleTargetAccountIdChange = (value) => {
-        setTargetAccountId(value);
+    const handleAccountIdChange = (value) => {
+        setAccountId(value);
     };
 
     useEffect(() => {
@@ -167,16 +135,10 @@ const RegisterTransaction = () => {
     }, [accountList]);
 
     useEffect(() => {
-        setValidTargetAccounts(
-            selectableAccounts?.filter((sa) => sa.id !== sourceAccountId)
+        setValidAccounts(
+            selectableAccounts?.filter((sa) => sa.id !== accountId)
         );
-    }, [selectableAccounts, sourceAccountId]);
-
-    useEffect(() => {
-        setValidSourceAccounts(
-            selectableAccounts?.filter((sa) => sa.id !== targetAccountId)
-        );
-    }, [selectableAccounts, targetAccountId]);
+    }, [selectableAccounts, accountId]);
 
     useEffect(() => {
         setIsValid(validate());
@@ -184,8 +146,7 @@ const RegisterTransaction = () => {
         transactionType,
         subject,
         description,
-        sourceAccountId,
-        targetAccountId,
+        accountId,
         currencyAmount?.amount,
         currencyAmount?.currency,
         teamId,
@@ -229,32 +190,17 @@ const RegisterTransaction = () => {
                             invalidNumberError={t("invalidNumberError")}
                             errors={errorData?.errors?.currency}
                         />
-                        {transactionType !== TransactionType.Income && (
-                            <SelectField
-                                value={sourceAccountId}
-                                label={"* " + t("fields.sourceAccount") + ":"}
-                                options={validSourceAccounts}
-                                onChange={handleSourceAccountIdChange}
-                                id="source_account"
-                                withDefault={
-                                    "-- " + t("selectAccount").toUpperCase()
-                                }
-                                errors={errorData?.errors?.to_account_id}
-                            />
-                        )}
-                        {transactionType !== TransactionType.Expense && (
-                            <SelectField
-                                value={targetAccountId}
-                                label={"* " + t("fields.targetAccount") + ":"}
-                                options={validTargetAccounts}
-                                onChange={handleTargetAccountIdChange}
-                                id="target_account"
-                                withDefault={
-                                    "-- " + t("selectAccount").toUpperCase()
-                                }
-                                errors={errorData?.errors?.from_account_id}
-                            />
-                        )}
+                        <SelectField
+                            value={accountId}
+                            label={"* " + t("fields.account") + ":"}
+                            options={validAccounts}
+                            onChange={handleAccountIdChange}
+                            id="account"
+                            withDefault={
+                                "-- " + t("selectAccount").toUpperCase()
+                            }
+                            errors={errorData?.errors?.account_id}
+                        />
                         <SelectField
                             value={teamId}
                             label={t("fields.team") + ":"}

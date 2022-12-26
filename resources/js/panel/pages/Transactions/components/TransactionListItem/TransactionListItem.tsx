@@ -33,8 +33,8 @@ const TransactionListItem: RC<TransactionListItemProps> = (props) => {
             </span>
             <span>{tx.user?.name ? `${t(`by`)} ${tx.user.name}` : <></>}</span>
             {showAccount ? (
-                <span>{`${t("fields.account")}: ${tx.from_account?.title}, ${
-                    tx.from_account?.provider_name
+                <span>{`${t("fields.account")}: ${tx.account?.title}, ${
+                    tx.account?.provider_name
                 }`}</span>
             ) : (
                 <></>
