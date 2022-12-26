@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import useTransactionData from "../../../../hooks/useTransactionData";
-import { formatDateTime } from "../../../../utils/methods";
+import { formatDate } from "../../../../utils/methods";
 import AttachmentGallery from "../../../../components/AttachmentMananagement";
 import AddAttachment from "../../../../components/AddAttachment";
 import { DetailsItem } from "../../../../components/DetailsItem/DetailsItem";
+import Modal from "../../../../components/Modal";
+import TransactionEdit from "../../components/TransactionEdit/TransactionEdit";
+import { useState } from "react";
 
 const TransactionDetails = () => {
     const { t } = useTranslation();
@@ -14,6 +17,12 @@ const TransactionDetails = () => {
         isLoading,
         transactionData: { data: tx },
     } = useTransactionData(params?.transactionId);
+    const [isShowingTxEditModal, setIsShowingTxEditModal] = useState("");
+    const navigate = useNavigate();
+
+    const handleUpdate = () => {
+        navigate(0);
+    };
 
     return (
         <div className="flex flex-col">
@@ -32,34 +41,44 @@ const TransactionDetails = () => {
                         <DetailsItem
                             label={t("fields.amount") + ":"}
                             valClassNames="flex items-center space-x-2"
-                            value={
-                                <>
-                                    <span className="text-2xl font-bold">
-                                        {tx.amount}
-                                    </span>
-                                    <span className="text-md uppercase text-gray-600">
-                                        {tx.currency}
-                                    </span>
-                                </>
+                            value={tx.amount}
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("amount")
+                            }
+                        />
+
+                        <DetailsItem
+                            label={t("fields.amount") + ":"}
+                            valClassNames="flex items-center space-x-2"
+                            value={tx.currency}
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("currency")
                             }
                         />
 
                         <DetailsItem
                             label={t("fields.subject") + ":"}
                             value={tx.subject}
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("subject")
+                            }
                         />
 
                         <DetailsItem
                             label={t("fields.when") + ":"}
-                            value={formatDateTime(dayjs(tx.when))}
+                            value={formatDate(dayjs(tx.when))}
                         />
 
                         <DetailsItem
                             label={t("fields.transactionType") + ":"}
                             value={t(tx.type)}
+                            showEdit={true}
+                            onEditClick={() => setIsShowingTxEditModal("type")}
                         />
 
-                        {}
                         <DetailsItem
                             label={t("fields.description") + ":"}
                             value={
@@ -71,25 +90,30 @@ const TransactionDetails = () => {
                                     </span>
                                 )
                             }
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("description")
+                            }
                         />
 
                         {tx.from_account && (
                             <DetailsItem
-                                label={t("fields.fromAccount") + ":"}
-                                value={`${tx.from_account.title} / ${tx.from_account.owner?.name}`}
-                            />
-                        )}
-
-                        {tx.to_account && (
-                            <DetailsItem
-                                label={t("fields.targetAccount") + ":"}
-                                value={`${tx.to_account.title} / ${tx.to_account.owner?.name}`}
+                                label={t("fields.account") + ":"}
+                                value={`${tx.from_account.title} (${tx.from_account.provider_name})`}
+                                showEdit={true}
+                                onEditClick={() =>
+                                    setIsShowingTxEditModal("from_account_id")
+                                }
                             />
                         )}
 
                         <DetailsItem
                             label={t("fields.team") + ":"}
                             value={tx.team?.name ?? "-"}
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("team_id")
+                            }
                         />
                     </>
                 ) : (
@@ -107,6 +131,17 @@ const TransactionDetails = () => {
                         <AttachmentGallery attachments={tx.attachments} />
                         <AddAttachment transactionId={tx.id} />
                     </div>
+                    <Modal
+                        isOpen={!!isShowingTxEditModal}
+                        setIsOpen={() => setIsShowingTxEditModal("")}
+                    >
+                        <TransactionEdit
+                            transactionId={tx.id}
+                            field={isShowingTxEditModal}
+                            value={tx[isShowingTxEditModal]}
+                            onSuccess={handleUpdate}
+                        />
+                    </Modal>
                 </>
             )}
         </div>

@@ -82,4 +82,14 @@ class User extends Authenticatable
     {
         return $this->morphMany(Account::class, "owner", "owner_type", "id");
     }
+
+    public function teamAccounts(): MorphMany
+    {
+        return $this->morphMany(
+            Account::class,
+            "owner",
+            "owner_type",
+            "id"
+        )->whereIn("owner_id", $this->allTeams()->pluck("id"));
+    }
 }

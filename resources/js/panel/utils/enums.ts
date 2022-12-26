@@ -1,19 +1,18 @@
 export const currencySymbols = {
-  DOP: "RD$",
-  USD: "$",
-  CAD: "C$",
-  EUR: "€",
+    DOP: "RD$",
+    USD: "$",
+    CAD: "C$",
+    EUR: "€",
 };
 
 export const TransactionType = {
-  Income: "income",
-  Expense: "expense",
-  Transfer: "transfer",
+    Income: "income",
+    Expense: "expense",
 };
 
 export const AccountType = {
-  SAVINGS: "savings",
-  CHECKING: "checking",
-  CREDIT_CARD: "creditcard",
-  CASH: "cash",
+    SAVINGS: "savings",
+    CHECKING: "checking",
+    CREDIT_CARD: "creditcard",
+    CASH: "cash",
 };

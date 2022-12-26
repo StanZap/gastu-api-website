@@ -32,7 +32,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware("auth:sanctum")->get("/me/profile", function (
     Request $request
 ) {
-    return new ProfileResource(auth()->user());
+    $userData = auth()
+        ->user()
+        ->load(["accounts"]);
+    return new ProfileResource($userData);
 });
 
 Route::middleware("auth:sanctum")

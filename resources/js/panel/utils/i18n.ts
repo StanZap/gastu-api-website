@@ -126,6 +126,8 @@ i18n
                     allStatsBtn: "All Stats",
                     myStatsBtn: "Mine Only",
                     noTransactions: "No Transactions to show",
+                    saveButton: "Save",
+                    currentValue: "Current Value",
                 },
             },
             es: {
@@ -237,6 +239,8 @@ i18n
                     allStatsBtn: "De todos",
                     myStatsBtn: "Solo las mías",
                     noTransactions: "Sin transacciones",
+                    saveButton: "Guardar",
+                    currentValue: "Valor Actual",
                 },
             },
         },

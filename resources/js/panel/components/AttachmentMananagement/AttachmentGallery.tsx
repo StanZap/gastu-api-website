@@ -28,7 +28,7 @@ const AttachmentGallery: FC<AttachmentManagementProps> = (props) => {
                     ))}
                 </div>
             ) : (
-                <div className="mt-4 italic text-gray-500">
+                <div className="italic text-gray-500">
                     {t("attachment.noAttachments")}
                 </div>
             )}

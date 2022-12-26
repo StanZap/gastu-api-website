@@ -58,7 +58,7 @@ const AddAttachment: FC<AttachmentManagementProps> = (props) => {
 
     return (
         <>
-            <div className="mt-5">
+            <div className="mt-1">
                 <button
                     onClick={handleShowAttachmentForm}
                     type="button"
