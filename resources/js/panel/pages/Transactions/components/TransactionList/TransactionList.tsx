@@ -1,5 +1,5 @@
-import { Transaction } from "../../types";
 import { FC } from "react";
+import { Transaction } from "../../types";
 import TransactionListItem from "../TransactionListItem/TransactionListItem";
 
 interface TransactionListProps {
@@ -13,12 +13,13 @@ const TransactionList: FC<TransactionListProps> = (props) => {
 
     return (
         <div className={className + ""}>
-            {transactions.map((tx) => (
+            {transactions.map((tx, index) => (
                 <TransactionListItem
                     classNames={
                         withBorders ? "border border-solid border-gray-100" : ""
                     }
                     key={tx.id}
+                    order={index + 1}
                     transaction={tx}
                     showTeam={true}
                     showAccount={true}

@@ -44,8 +44,12 @@ const TransactionListSummary = () => {
             <div className="py-4">
                 <h1 className="px-8 uppercase text-md ">{getTitle()}</h1>
                 <div className="flex flex-col space-y-3 max-h-96 overflow-y-auto">
-                    {transactionList.map((tx) => (
-                        <TransactionListItem key={tx.id} transaction={tx} />
+                    {transactionList.map((tx, index) => (
+                        <TransactionListItem
+                            key={tx.id}
+                            order={index + 1}
+                            transaction={tx}
+                        />
                     ))}
                     {transactionList.length === 0 ? (
                         <p className="pt-4 text-gray-700">

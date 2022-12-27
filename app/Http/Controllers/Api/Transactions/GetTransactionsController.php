@@ -49,7 +49,7 @@ class GetTransactionsController extends Controller
                 request("orderBy", "updated_at"),
                 request("orderDirection", "desc")
             )
-            ->paginate($request->get("limit", 10));
+            ->paginate($request->get("limit", 30));
 
         return new Response($transactionItems, Response::HTTP_OK);
     }
