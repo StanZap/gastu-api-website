@@ -21,7 +21,7 @@ const ComboBox: FC<MyComboBoxProps> = (props) => {
         label,
         options: filtrableOptions = [],
         value,
-        errors = [],
+        errors,
         onChange,
     } = props;
     const [query, setQuery] = useState("");

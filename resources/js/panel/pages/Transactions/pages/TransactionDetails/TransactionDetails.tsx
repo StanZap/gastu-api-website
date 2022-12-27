@@ -98,16 +98,22 @@ const TransactionDetails = () => {
                             }
                         />
 
-                        {tx.account && (
-                            <DetailsItem
-                                label={t("fields.account") + ":"}
-                                value={`${tx.account.title} (${tx.account.provider_name})`}
-                                showEdit={true}
-                                onEditClick={() =>
-                                    setIsShowingTxEditModal("account_id")
-                                }
-                            />
-                        )}
+                        <DetailsItem
+                            label={t("fields.account") + ":"}
+                            value={
+                                tx.account ? (
+                                    `${tx.account?.title} (${tx.account?.provider_name})`
+                                ) : (
+                                    <span className="italic text-md text-gray-500">
+                                        {t("unspecified")}
+                                    </span>
+                                )
+                            }
+                            showEdit={true}
+                            onEditClick={() =>
+                                setIsShowingTxEditModal("account_id")
+                            }
+                        />
 
                         <DetailsItem
                             label={t("fields.team") + ":"}

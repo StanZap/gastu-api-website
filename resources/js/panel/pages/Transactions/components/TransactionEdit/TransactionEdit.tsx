@@ -109,7 +109,7 @@ const TransactionEdit = ({
     }, [field, t]);
 
     return (
-        <div className="py-10 space-y-4 min-h-[400px] px-8">
+        <div className="py-10 space-y-4 min-h-[400px] px-8 min-w-[400px]">
             <div className="flex flex-col space-y-5">
                 <h4 className="text-xl">
                     {`${t("edit")} ${t("fields." + field)}`}
