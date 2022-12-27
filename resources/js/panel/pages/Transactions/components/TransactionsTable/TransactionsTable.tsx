@@ -126,31 +126,8 @@ const TransactionsTable: FC<TransactionsTableProps> = (props) => {
                             {item.amount} {item.currency}
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
-                            <div className="flex flex-col text-xs">
-                                {item.from_account && (
-                                    <div className="flex flex-col">
-                                        <span className="text-md text-gray-400">
-                                            {t("source") + ": "}
-                                        </span>
-                                        <span>
-                                            {`${item.from_account.title} / ${item.from_account.owner?.name}`}
-                                        </span>
-                                    </div>
-                                )}
-                                {item.to_account && item.from_account && (
-                                    <hr className="my-2 w-full border-t border-t-gray-300" />
-                                )}
-                                {item.to_account && (
-                                    <div className="flex flex-col">
-                                        <span className="text-md text-gray-400">
-                                            {t("target") + ": "}
-                                        </span>
-                                        <span>
-                                            {`${item.to_account.title} / ${item.to_account.owner?.name}`}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                            {item.account &&
+                                `${item.account.title}, ${item.account.provider_name}`}
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
                             <span>{item?.team?.name}</span>
@@ -169,11 +146,7 @@ const TransactionsTable: FC<TransactionsTableProps> = (props) => {
                                 <EyeIcon className="h-4 w-4 text-gray-600" />
                                 <span>{t("details")}</span>
                             </Link>
-                            {/*<EditButton to={"./edit/" + item.id}>*/}
-                            {/*  {t("edit")}*/}
-                            {/*</EditButton>*/}
                         </td>
-                        {/*<td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">{item.role}</td>*/}
                     </tr>
                 ))}
             </tbody>
