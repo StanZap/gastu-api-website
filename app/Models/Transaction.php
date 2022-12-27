@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enums\CurrencyEnum;
 use App\Enums\TransactionTypeEnum;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,6 +45,16 @@ class Transaction extends Model
         "currency" => CurrencyEnum::class,
         "type" => TransactionTypeEnum::class,
     ];
+
+    /*
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function when(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => (new Carbon($value))->format("Y-m-d")
+        );
+    }
 
     public function scopeFilter($query, array $filters)
     {
