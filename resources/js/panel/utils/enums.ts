@@ -1,6 +1,6 @@
 export const currencySymbols = {
     DOP: "RD$",
-    USD: "$",
+    USD: "US$",
     CAD: "C$",
     EUR: "€",
 };

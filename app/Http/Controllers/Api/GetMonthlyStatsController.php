@@ -14,28 +14,37 @@ class GetMonthlyStatsController extends Controller
         $myTeamIds = auth()
             ->user()
             ->allTeams()
+            //            ->where("personal_team", false)
             ->pluck("id");
 
         $start = now()->startOfYear();
         $end = $start->copy()->endOfYear();
 
-        $query = DB::table("transactions")
+        $query = DB::table("transactions as t")
             ->select(
                 DB::raw(
-                    "sum(amount) as amount, currency, type, team_id, DATE_FORMAT(`when`,'%m-%Y') as month"
+                    "sum(t.amount) as amount, t.currency, t.type, t.team_id, DATE_FORMAT(t.`when`,'%m-%Y') as month, u.name as user"
                 )
             )
+            ->rightJoin("accounts as a", "t.account_id", "=", "a.id")
+            ->rightJoin("teams as tm", function ($join) {
+                $join
+                    ->on("a.owner_id", "=", "tm.id")
+                    ->where("a.owner_type", "=", "team")
+                    ->where("tm.personal_team", true);
+            })
+            ->rightJoin("users as u", "tm.user_id", "=", "u.id")
             ->orderByDesc("month")
             ->orderBy("type")
             ->whereBetween("when", [$start, $end])
             ->whereIn("team_id", $myTeamIds);
 
-        if ($request->has("scope") && $request->get("scope") === "mine") {
-            $query->where("user_id", auth()->id());
+        if ($request->has("teamId")) {
+            $query->where("team_id", $request->get("teamId"));
         }
 
         $monthlyStats = $query
-            ->groupBy(["team_id", "month", "type", "currency"])
+            ->groupBy(["team_id", "month", "type", "currency", "user"])
             ->get();
 
         $res = $monthlyStats->groupBy([
