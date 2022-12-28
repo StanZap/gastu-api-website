@@ -14,7 +14,6 @@ class GetMonthlyStatsController extends Controller
         $myTeamIds = auth()
             ->user()
             ->allTeams()
-            //            ->where("personal_team", false)
             ->pluck("id");
 
         $start = now()->startOfYear();
@@ -38,10 +37,6 @@ class GetMonthlyStatsController extends Controller
             ->orderBy("type")
             ->whereBetween("when", [$start, $end])
             ->whereIn("team_id", $myTeamIds);
-
-        if ($request->has("teamId")) {
-            $query->where("team_id", $request->get("teamId"));
-        }
 
         $monthlyStats = $query
             ->groupBy(["team_id", "month", "type", "currency", "user"])

@@ -5,12 +5,12 @@ import useMonthlyStatsData from "../../hooks/useMonthlyStatsData";
 import Loader from "../../components/Loader";
 import { useTranslation } from "react-i18next";
 import { TransactionType } from "../../utils/enums";
-import ScopeSwitch from "../../components/ScopeSwitch";
 import { StatsItem, StoreState } from "../../store/useStore";
 import TransactionListSummary from "../Transactions/components/TransactionListSummary/TransactionListSummary";
 import Modal from "../../components/Modal";
 import { formatCurrency } from "../../utils/methods";
 import { UserGroupIcon } from "@heroicons/react/20/solid";
+// import ScopeSwitch from "../../components/ScopeSwitch";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();
@@ -24,7 +24,7 @@ const MonthlyStatsList = () => {
         <AppLayout>
             <div className="mb-5 flex justify-between flex-col md:flex-row">
                 <h1 className="text-2xl">{t("monthlyStatsCardHeading")}</h1>
-                <ScopeSwitch />
+                {/*<ScopeSwitch />*/}
             </div>
             {isLoading ? (
                 <Loader />
@@ -78,9 +78,10 @@ const AmountUserList: FC<{ stats: StatsItem[] }> = ({ stats }: {}) => {
 
 interface AmountItemProps {
     stats: Array<StatsItem>;
+    onShowMore: () => void;
 }
 
-const AmountSum: FC<AmountItemProps> = ({ stats }) => {
+const AmountSum: FC<AmountItemProps> = ({ stats, onShowMore }) => {
     const { amount: total } = stats.reduce((acc, item) => {
         return {
             amount: +acc.amount + +item.amount,
@@ -88,7 +89,10 @@ const AmountSum: FC<AmountItemProps> = ({ stats }) => {
     });
 
     return (
-        <div className="flex items-center space-x-1">
+        <div
+            className="flex items-center space-x-1 cursor-pointer hover:opacity-75"
+            onClick={onShowMore}
+        >
             {stats?.[0]?.type === TransactionType.Income ? (
                 <span className="text-green-700 text-2xl font-bold">
                     {formatCurrency(total)}
@@ -119,7 +123,7 @@ const TxItem: FC<TxItemProps> = ({ isPersonalTeam, txType, txTypeStat }) => {
 
     return (
         <div className="flex flex-col space-y-1">
-            <h4 className="text-xs uppercase ">
+            <h4 className="text-xs uppercase">
                 {isPersonalTeam ? t("my" + txType) : t(txType + "s")}
             </h4>
             <div className="flex flex-col bg-100 space-y-1">
@@ -127,10 +131,12 @@ const TxItem: FC<TxItemProps> = ({ isPersonalTeam, txType, txTypeStat }) => {
                     <div
                         key={currency}
                         className="flex flex-col space-x-1 items-start"
-                        onClick={() => setIsDrawerOpen(true, stats?.[0])}
                     >
-                        <AmountSum stats={stats} />
-                        {stats?.length > 1 && <AmountUserList stats={stats} />}
+                        <AmountSum
+                            onShowMore={() => setIsDrawerOpen(true, stats?.[0])}
+                            stats={stats}
+                        />
+                        {!isPersonalTeam && <AmountUserList stats={stats} />}
                     </div>
                 ))}
             </div>
