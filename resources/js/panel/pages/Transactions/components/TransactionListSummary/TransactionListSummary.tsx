@@ -41,7 +41,7 @@ const TransactionListSummary = () => {
         <Loader />
     ) : (
         stat && (
-            <div className="py-4">
+            <div className="py-4 md:w-[600px]">
                 <h1 className="px-8 uppercase text-md ">{getTitle()}</h1>
                 <div className="flex flex-col space-y-3 max-h-96 overflow-y-auto">
                     {transactionList.map((tx, index) => (

@@ -57,7 +57,7 @@ const Modal: FC<ModalProps> = (props) => {
             {/* Full-screen container to center the panel */}
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 {/* The actual dialog panel  */}
-                <Dialog.Panel className="mx-auto max-w-lg rounded rounded-lg bg-white">
+                <Dialog.Panel className="mx-auto rounded rounded-lg bg-white">
                     {children}
                 </Dialog.Panel>
             </div>
