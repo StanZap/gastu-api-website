@@ -4,11 +4,7 @@ import { NavLink } from "react-router-dom";
 import { formatCurrency, formatDate } from "../../../../utils/methods";
 import { useTranslation } from "react-i18next";
 import { TransactionType } from "../../../../utils/enums";
-import {
-    CalendarDaysIcon,
-    PencilSquareIcon,
-    UserIcon,
-} from "@heroicons/react/20/solid";
+import { CalendarDaysIcon, UserIcon } from "@heroicons/react/20/solid";
 
 interface TransactionListItemProps {
     order?: number;
@@ -44,6 +40,9 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
             ) : (
                 <></>
             )}
+            <div className="text-gray-700 text-md flex items-center space-x-1 text-gray-700 ">
+                <span>{tx.subject}</span>
+            </div>
             <div className="space-x-1">
                 {tx.type === TransactionType.Income ? (
                     <span className="text-green-700 text-3xl font-bold">
@@ -56,25 +55,21 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
                 )}
                 <span className="text-xl">{tx.currency}</span>
             </div>
-            <div className="flex text-sm items-center space-x-1 text-gray-700 ">
+            <div className="text-sm flex items-center space-x-1 text-gray-600 ">
                 <UserIcon className="w-4 h-4" />
                 <span>{tx.user?.name ? `${tx.user.name}` : <></>}</span>
             </div>
-            <div className="text-gray-700 text-sm flex items-center space-x-1 text-gray-700 ">
+            <div className="text-sm flex items-center space-x-1 text-gray-600 ">
                 <CalendarDaysIcon className="w-4 h-4" />
                 <span className="">{formatDate(tx.when)}</span>
             </div>
-            <div className="text-gray-700 text-sm flex items-center space-x-1 text-gray-700 ">
-                <PencilSquareIcon className="w-4 h-4" />
-                <span>{tx.subject}</span>
-            </div>
-            <div className="flex space-x-1">
+            <div className="flex md:space-x-1 flex-col md:flex-row">
                 {showAccount ? (
                     <div className="flex-1 flex flex-col mt-2">
                         <span className="text-gray-500 uppercase text-xs">
                             {t("fields.account") + ":"}
                         </span>
-                        <span>{`${tx.account?.title}, ${tx.account?.provider_name}`}</span>
+                        <span className="text-sm">{`${tx.account?.title}, ${tx.account?.provider_name}`}</span>
                     </div>
                 ) : (
                     <></>
@@ -84,7 +79,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
                         <span className="text-gray-500 uppercase text-xs">
                             {t("fields.team") + ":"}
                         </span>
-                        <span>{tx.team?.name}</span>
+                        <span className="text-sm">{tx.team?.name}</span>
                     </div>
                 ) : (
                     <></>
