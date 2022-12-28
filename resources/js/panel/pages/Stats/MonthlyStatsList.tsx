@@ -29,7 +29,7 @@ const MonthlyStatsList = () => {
             {isLoading ? (
                 <Loader />
             ) : (
-                <div className="flex flex-col space-y-8">
+                <div className="flex flex-col space-y-4">
                     {monthlyStats &&
                         Object.entries(monthlyStats)?.map(
                             ([monthYear, monthStat]) => (
@@ -61,15 +61,22 @@ const AmountUserList: FC<{ stats: StatsItem[] }> = ({ stats }: {}) => {
     return (
         <div className="flex flex-col items-start space-y-1">
             {stats?.map((item: StatsItem, index: number) => (
-                <div key={index} className="flex items-center space-x-1 ml-2">
-                    <span className="text-lg">
-                        &bull; {formatCurrency(item.amount)}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                        {item.currency}
-                    </span>
-                    <span className="text-md text-gray-600">by</span>
-                    <span className="text-md text-gray-600">{item.user}</span>
+                <div className="flex flex-col" key={index}>
+                    <div className="text-md text-gray-600 capitalize">
+                        <span className="mr-2 text-gray-400">&bull;</span>
+                        <span className="text-md text-gray-600">
+                            {item.user}
+                        </span>
+                    </div>
+                    <div className="flex items-center space-x-1 ml-2">
+                        <span>&nbsp;</span>
+                        <span className="text-lg">
+                            {formatCurrency(item.amount)}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                            {item.currency}
+                        </span>
+                    </div>
                 </div>
             ))}
         </div>
@@ -148,8 +155,8 @@ const TeamItem = ({ team, teamStat }) => {
     return (
         <div
             className={
-                "rounded-lg p-5 flex flex-col space-y-1 " +
-                (team.personal_team ? "bg-gray-200 " : "")
+                "rounded-lg flex flex-col space-y-2 p-5  " +
+                (team.personal_team ? "bg-gray-200" : "")
             }
         >
             {!team.personal_team ? (
@@ -195,10 +202,10 @@ const MonthItem = ({ monthName, monthStat }) => {
 
     return (
         <div className="flex flex-col justify-between space-y-3">
-            <h2 className="text-xl w-full text-center bg-gray-100 py-2">
+            <h2 className="text-md w-full text-center uppercase border-top border-gray-500 border-solid text-gray-500 mt-4 ">
                 {monthName}
             </h2>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-2 bg-gray-100 rounded-lg">
                 {Object.entries(monthStat)?.map(
                     ([teamId, teamStat]) =>
                         teamMap[teamId] && (

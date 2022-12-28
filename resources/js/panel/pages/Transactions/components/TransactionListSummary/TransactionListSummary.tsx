@@ -49,6 +49,8 @@ const TransactionListSummary = () => {
                             key={tx.id}
                             order={index + 1}
                             transaction={tx}
+                            showAccount={true}
+                            showTeam={true}
                         />
                     ))}
                     {transactionList.length === 0 ? (
