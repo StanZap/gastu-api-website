@@ -22,14 +22,14 @@ const MonthlyStatsList = () => {
 
     return (
         <AppLayout>
-            <div className="mb-5 flex justify-between flex-col md:flex-row">
+            <div className="flex justify-between flex-col md:flex-row">
                 <h1 className="text-2xl">{t("monthlyStatsCardHeading")}</h1>
                 {/*<ScopeSwitch />*/}
             </div>
             {isLoading ? (
                 <Loader />
             ) : (
-                <div className="flex flex-col space-y-4">
+                <div className="flex flex-col space-y-2">
                     {monthlyStats &&
                         Object.entries(monthlyStats)?.map(
                             ([monthYear, monthStat]) => (

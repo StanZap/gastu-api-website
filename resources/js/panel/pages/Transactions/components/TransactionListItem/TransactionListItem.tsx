@@ -1,8 +1,14 @@
 import { FC } from "react";
 import { Transaction } from "../../types";
 import { NavLink } from "react-router-dom";
-import { formatDate } from "../../../../utils/methods";
+import { formatCurrency, formatDate } from "../../../../utils/methods";
 import { useTranslation } from "react-i18next";
+import { TransactionType } from "../../../../utils/enums";
+import {
+    CalendarDaysIcon,
+    PencilSquareIcon,
+    UserIcon,
+} from "@heroicons/react/20/solid";
 
 interface TransactionListItemProps {
     order?: number;
@@ -28,7 +34,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
             to={`/transactions/${tx.id}/details`}
             className={
                 classNames +
-                " px-8 py-3 even:bg-gray-100 flex flex-col capitalize relative"
+                " px-8 py-3 even:bg-gray-100 flex flex-col relative"
             }
         >
             {order ? (
@@ -38,35 +44,52 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
             ) : (
                 <></>
             )}
-            <h3>{tx.subject}</h3>
             <div className="space-x-1">
-                <span className="text-3xl">{tx.amount}</span>
+                {tx.type === TransactionType.Income ? (
+                    <span className="text-green-700 text-3xl font-bold">
+                        {formatCurrency(tx.amount)}
+                    </span>
+                ) : (
+                    <span className="text-red-700 text-3xl font-bold">
+                        {formatCurrency(tx.amount)}
+                    </span>
+                )}
                 <span className="text-xl">{tx.currency}</span>
             </div>
-            <span className="text-sm text-gray-700">
-                On {formatDate(tx.when)}
-            </span>
-            <span>{tx.user?.name ? `${t(`by`)} ${tx.user.name}` : <></>}</span>
-            {showAccount ? (
-                <div className="flex flex-col mt-2">
-                    <span className="text-gray-500 uppercase text-xs">
-                        {t("fields.account") + ":"}
-                    </span>
-                    <span>{`${tx.account?.title}, ${tx.account?.provider_name}`}</span>
-                </div>
-            ) : (
-                <></>
-            )}
-            {showTeam ? (
-                <div className="flex flex-col mt-2">
-                    <span className="text-gray-500 uppercase text-xs">
-                        {t("fields.team") + ":"}
-                    </span>
-                    <span>{tx.team?.name}</span>
-                </div>
-            ) : (
-                <></>
-            )}
+            <div className="flex text-sm items-center space-x-1 text-gray-700 ">
+                <UserIcon className="w-4 h-4" />
+                <span>{tx.user?.name ? `${tx.user.name}` : <></>}</span>
+            </div>
+            <div className="text-gray-700 text-sm flex items-center space-x-1 text-gray-700 ">
+                <CalendarDaysIcon className="w-4 h-4" />
+                <span className="">{formatDate(tx.when)}</span>
+            </div>
+            <div className="text-gray-700 text-sm flex items-center space-x-1 text-gray-700 ">
+                <PencilSquareIcon className="w-4 h-4" />
+                <span>{tx.subject}</span>
+            </div>
+            <div className="flex space-x-1">
+                {showAccount ? (
+                    <div className="flex-1 flex flex-col mt-2">
+                        <span className="text-gray-500 uppercase text-xs">
+                            {t("fields.account") + ":"}
+                        </span>
+                        <span>{`${tx.account?.title}, ${tx.account?.provider_name}`}</span>
+                    </div>
+                ) : (
+                    <></>
+                )}
+                {showTeam ? (
+                    <div className="flex-1 flex flex-col mt-2">
+                        <span className="text-gray-500 uppercase text-xs">
+                            {t("fields.team") + ":"}
+                        </span>
+                        <span>{tx.team?.name}</span>
+                    </div>
+                ) : (
+                    <></>
+                )}
+            </div>
         </NavLink>
     );
 };
