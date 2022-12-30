@@ -2,6 +2,7 @@ import create from "zustand";
 import { Transaction } from "../pages/Transactions/types";
 import { Account } from "../pages/Accounts/types";
 import { StatsItem, StatsItemGroupByMonth } from "../pages/Stats/StatsItem";
+import { Budget } from "../pages/Budget/type";
 
 interface DataList<T> {
     data: T[];
@@ -27,6 +28,9 @@ interface StoreState {
     setIsDrawerOpen: (isOpen: boolean, contextData: any) => void;
     isDrawerOpen: boolean;
     drawerContext: any;
+
+    budgetData: DataWrap<Budget[]>;
+    setBudgetData: Function;
 }
 
 // @ts-ignore
@@ -99,6 +103,17 @@ const useStore = create<StoreState>((set) => ({
             return {
                 isDrawerOpen: isOpen,
                 drawerContext: contextData,
+            };
+        });
+    },
+
+    budgetData: {
+        data: [],
+    },
+    setBudgetData: (budgetData) => {
+        set(() => {
+            return {
+                budgetData,
             };
         });
     },

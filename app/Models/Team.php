@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
@@ -19,7 +20,7 @@ class Team extends JetstreamTeam
      * @var array
      */
     protected $casts = [
-        'personal_team' => 'boolean',
+        "personal_team" => "boolean",
     ];
 
     /**
@@ -27,10 +28,7 @@ class Team extends JetstreamTeam
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'personal_team',
-    ];
+    protected $fillable = ["name", "personal_team"];
 
     /**
      * The event map for the model.
@@ -38,13 +36,18 @@ class Team extends JetstreamTeam
      * @var array
      */
     protected $dispatchesEvents = [
-        'created' => TeamCreated::class,
-        'updated' => TeamUpdated::class,
-        'deleted' => TeamDeleted::class,
+        "created" => TeamCreated::class,
+        "updated" => TeamUpdated::class,
+        "deleted" => TeamDeleted::class,
     ];
 
     public function accounts(): MorphMany
     {
-        return $this->morphMany(Account::class, 'owner', 'owner_type', 'id');
+        return $this->morphMany(Account::class, "owner", "owner_type", "id");
+    }
+
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
     }
 }

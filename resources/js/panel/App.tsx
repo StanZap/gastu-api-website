@@ -6,6 +6,7 @@ import { login } from "./services/AuthService";
 import "./utils/i18n";
 import NotFound from "./pages/NotFound";
 import MonthlyStatsList from "./pages/Stats/MonthlyStatsList";
+import Budgets from "./pages/Budget/pages/Budgets";
 
 const App = () => {
     useEffect(() => {
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path="transactions/*" element={<Transactions />} />
                 <Route path="accounts/*" element={<Accounts />} />
                 <Route path="stats/*" element={<MonthlyStatsList />} />
+                <Route path="budgets/*" element={<Budgets />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
