@@ -8,13 +8,18 @@ export interface StatsItem {
 
 export interface StatsItemGroupByMonth {
     [month: string]: {
+        [type: string]: {
+            [currency: string]: {
+                [teamId: string]: StatsItem[];
+            };
+        };
+    };
+}
+
+export interface MyStatsMonth {
+    [month: string]: {
         [teamId: string]: {
             [type: string]: StatsItem[];
         };
     };
-    // }]: StatsItem[];
-    // month: number;
-    // type: string;
-    // team_id: number | string;
-    // currencies: Array<{ currency: string; amount: number }>;
 }

@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-const ScopeSwitch = ({ className = "" }) => {
+const StatsScopeSwitch = ({ className = "" }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { t } = useTranslation();
 
@@ -10,7 +10,7 @@ const ScopeSwitch = ({ className = "" }) => {
     };
 
     const handleAllStats = () => {
-        searchParams.delete("scope");
+        searchParams.set("scope", "team");
         setSearchParams(searchParams);
     };
 
@@ -40,4 +40,4 @@ const ScopeSwitch = ({ className = "" }) => {
     );
 };
 
-export default ScopeSwitch;
+export default StatsScopeSwitch;

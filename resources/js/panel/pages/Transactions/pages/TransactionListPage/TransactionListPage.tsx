@@ -7,7 +7,7 @@ import Loader from "../../../../components/Loader";
 import useTransactionListData from "../../../../hooks/useTransactionListData";
 import { useStore } from "../../../../store";
 import { useEffect } from "react";
-import ScopeSwitch from "../../../../components/ScopeSwitch";
+import { TxScopeSwitch } from "../../../../components/ScopeSwitch";
 import TransactionsTable from "../../components/TransactionsTable";
 import TransactionList from "../../components/TransactionList";
 import ListViewSwitch, {
@@ -61,7 +61,7 @@ export default function TransactionListPage() {
                             <span>{t("registerTransactionLink")}</span>
                         </Link>
                         <ListViewSwitch />
-                        <ScopeSwitch />
+                        <TxScopeSwitch />
                     </div>
                 </div>
                 <div className="flex lg:hidden mt-4 space-x-1 justify-between">
@@ -74,7 +74,7 @@ export default function TransactionListPage() {
                             {t("registerTransactionLinkShort")}
                         </span>
                     </Link>
-                    <ScopeSwitch className="" />
+                    <TxScopeSwitch className="" />
                 </div>
                 {searchParams && (
                     <Pagination
