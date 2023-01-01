@@ -57,7 +57,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
             </div>
             <div className="text-sm flex items-center space-x-1 text-gray-600 ">
                 <UserIcon className="w-4 h-4" />
-                <span>{tx.user?.name ? `${tx.user.name}` : <></>}</span>
+                <span>{tx.user_name ? `${tx.user_name}` : <></>}</span>
             </div>
             <div className="text-sm flex items-center space-x-1 text-gray-600 ">
                 <CalendarDaysIcon className="w-4 h-4" />
@@ -69,7 +69,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
                         <span className="text-gray-500 uppercase text-xs">
                             {t("fields.account") + ":"}
                         </span>
-                        <span className="text-sm">{`${tx.account?.title}, ${tx.account?.provider_name}`}</span>
+                        <span className="text-sm">{`${tx.account_title}, ${tx.account_provider} (${tx.account_owner_team})`}</span>
                     </div>
                 ) : (
                     <></>
@@ -79,7 +79,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
                         <span className="text-gray-500 uppercase text-xs">
                             {t("fields.team") + ":"}
                         </span>
-                        <span className="text-sm">{tx.team?.name}</span>
+                        <span className="text-sm">{tx.team_name}</span>
                     </div>
                 ) : (
                     <></>

@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\Budgets\GetBudgetsController;
 use App\Http\Controllers\Api\GetMonthlyStatsController;
 use App\Http\Controllers\Api\Transactions\CreateTransactionController;
 use App\Http\Controllers\Api\Transactions\DeleteTransactionController;
+use App\Http\Controllers\Api\Transactions\GetMyStatsTransactionsController;
+use App\Http\Controllers\Api\Transactions\GetTeamStatsTransactionsController;
 use App\Http\Controllers\Api\Transactions\GetTransactionsController;
 use App\Http\Controllers\Api\Transactions\GetOneTransactionController;
 use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
@@ -64,6 +66,11 @@ Route::middleware("auth:sanctum")
     ->group(function () {
         Route::get("/global", GlobalStatsController::class);
         Route::get("/monthly", GetMonthlyStatsController::class);
+        Route::get("/my/transactions", GetMyStatsTransactionsController::class);
+        Route::get(
+            "/team/transactions",
+            GetTeamStatsTransactionsController::class
+        );
     });
 
 Route::middleware("auth:sanctum")

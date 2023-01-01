@@ -60,7 +60,7 @@ class GetMonthlyStatsController extends Controller
             $query = DB::table("transactions as t")
                 ->select(
                     DB::raw(
-                        "sum(t.amount) as amount, t.currency, CASE WHEN t.type = 'expense' AND tm.id != t.team_id THEN 'income' WHEN t.type = 'income' AND tm.id != t.team_id THEN 'expense' ELSE t.type END as type, t.team_id, DATE_FORMAT(t.`when`,'%m-%Y') as month, (CASE WHEN tm.id = t.team_id THEN tm.name ELSE u.name END) as user"
+                        "sum(t.amount) as amount, t.currency, CASE WHEN t.type = 'expense' AND tm.id != t.team_id THEN 'income' WHEN t.type = 'income' AND tm.id != t.team_id THEN 'expense' ELSE t.type END as type, t.team_id, DATE_FORMAT(t.`when`,'%m-%Y') as month, (CASE WHEN tm.id = t.team_id THEN tm.name ELSE u.name END) as user, a.owner_id as account_owner_id"
                     )
                 )
                 ->rightJoin("accounts as a", "t.account_id", "=", "a.id")
@@ -75,12 +75,15 @@ class GetMonthlyStatsController extends Controller
                 ->whereBetween("when", [$start, $end])
                 ->whereIn("t.team_id", $teamIds);
 
-            //            if ($request->has("teamId")) {
-            //                $query->where("team_id", $request->get("teamId"));
-            //            }
-
             $monthlyStats = $query
-                ->groupBy(["team_id", "month", "type", "currency", "user"])
+                ->groupBy([
+                    "team_id",
+                    "month",
+                    "type",
+                    "currency",
+                    "user",
+                    "account_owner_id",
+                ])
                 ->get();
 
             $res = $monthlyStats->groupBy([

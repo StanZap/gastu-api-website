@@ -1,4 +1,4 @@
-import useTransactionListSummary from "../../../../hooks/useTransactionListSummary";
+import useStatsTransactions from "../../../../hooks/useStatsTransactions";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useStore } from "../../../../store";
@@ -13,12 +13,14 @@ const TransactionListSummary = () => {
     }));
     const { t } = useTranslation();
     const [params, setParams] = useState(null);
-    const { isLoading, transactionList } = useTransactionListSummary(params);
     const [searchParams] = useSearchParams();
+    const { isLoading, transactionList } = useStatsTransactions(
+        params,
+        searchParams?.get("scope") === "team"
+    );
 
     useEffect(() => {
         if (!stat) return;
-
         setParams({
             month: stat?.month?.split("-")?.[0],
             year: stat?.month?.split("-")?.[1],
@@ -26,6 +28,7 @@ const TransactionListSummary = () => {
             teamId: stat.team_id,
             currency: stat.currency,
             scope: searchParams.get("scope", undefined),
+            accountOwnerId: stat.account_owner_id || undefined,
         });
     }, [stat]);
 

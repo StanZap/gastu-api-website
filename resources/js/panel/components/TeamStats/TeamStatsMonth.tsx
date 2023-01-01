@@ -28,7 +28,10 @@ const AmountSum: FC<AmountItemProps> = ({ stats, onShowMore }) => {
     );
 };
 
-const AmountUserList: FC<{ stats: StatsItem[] }> = ({ stats }: {}) => {
+const AmountUserList: FC<{
+    stats: StatsItem[];
+    onShowMore: (item: StatsItem) => void;
+}> = ({ stats, onShowMore }: {}) => {
     return (
         <div className="flex flex-col items-start space-y-1">
             {stats?.map((item: StatsItem, index: number) => (
@@ -42,6 +45,7 @@ const AmountUserList: FC<{ stats: StatsItem[] }> = ({ stats }: {}) => {
                     <div className="flex items-center space-x-1 ml-2">
                         <span>&nbsp;</span>
                         <Amount
+                            onClick={() => onShowMore(item)}
                             type={item.type}
                             amount={item.amount}
                             currency={item.currency}
@@ -67,6 +71,16 @@ const TxItem: FC<TxItemProps> = ({ isPersonalTeam, txType, txTypeStat }) => {
         setIsDrawerOpen: state.setIsDrawerOpen,
     }));
 
+    const handleShowMoreOfAll = (stat) => {
+        const context = { ...stat };
+        delete context.account_owner_id;
+        setIsDrawerOpen(true, context);
+    };
+
+    const handleShowMoreForTeam = (stat) => {
+        setIsDrawerOpen(true, stat);
+    };
+
     return (
         <div className="flex flex-col space-y-1">
             <h4 className="text-xs uppercase">
@@ -79,10 +93,15 @@ const TxItem: FC<TxItemProps> = ({ isPersonalTeam, txType, txTypeStat }) => {
                         className="flex flex-col space-x-1 items-start"
                     >
                         <AmountSum
-                            onShowMore={() => setIsDrawerOpen(true, stats?.[0])}
+                            onShowMore={() => handleShowMoreOfAll(stats?.[0])}
                             stats={stats}
                         />
-                        {!isPersonalTeam && <AmountUserList stats={stats} />}
+                        {!isPersonalTeam && (
+                            <AmountUserList
+                                onShowMore={handleShowMoreForTeam}
+                                stats={stats}
+                            />
+                        )}
                     </div>
                 ))}
             </div>

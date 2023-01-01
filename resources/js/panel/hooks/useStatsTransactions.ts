@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import { fetchTransactions } from "../services/TransactionService";
 import { Transaction } from "../pages/Transactions/types";
+import {
+    fetchMyStatsTransactions,
+    fetchTeamStatsTransactions,
+} from "../services/StatsTransactionService";
 
-const useTransactionListSummary = (filters) => {
+const useStatsTransactions = (filters, isTeamStats = true) => {
     const [transactionList, setTransactionList] = useState<Transaction[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const load = async () => {
         try {
-            const resp = await fetchTransactions(filters);
+            let resp;
+            if (isTeamStats) {
+                resp = await fetchTeamStatsTransactions(filters);
+            } else {
+                resp = await fetchMyStatsTransactions(filters);
+            }
             setTransactionList(resp.data);
         } catch (e) {
             alert(
@@ -28,4 +36,4 @@ const useTransactionListSummary = (filters) => {
     return { isLoading, transactionList };
 };
 
-export default useTransactionListSummary;
+export default useStatsTransactions;

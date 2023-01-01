@@ -40,6 +40,18 @@ const TypeCurrencyAmounts: FC<TypeCurrencyAmountsProps> = ({
         setTeamMap(map);
     }, [profileData]);
 
+    const showMoreFromOwner = (stat) => {
+        setIsDrawerOpen(true, stat);
+    };
+
+    const showMore = (teamTags) => {
+        const stat = {
+            ...Object.values(teamTags)[0][0],
+        };
+        delete stat.team_id;
+        setIsDrawerOpen(true, stat);
+    };
+
     return (
         <div className="flex flex-col space-y-1">
             <h4 className="text-xs uppercase">{t("my" + type)}</h4>
@@ -50,7 +62,7 @@ const TypeCurrencyAmounts: FC<TypeCurrencyAmountsProps> = ({
                         className="flex flex-col space-x-1 items-start"
                     >
                         <CurrencyTeamsSumAmount
-                            onShowMore={() => setIsDrawerOpen(true, stats?.[0])}
+                            onShowMore={() => showMore(teamTags)}
                             teamsMap={teamTags}
                             type={type}
                             currency={currency}
@@ -58,7 +70,11 @@ const TypeCurrencyAmounts: FC<TypeCurrencyAmountsProps> = ({
                         <div className="flex flex-col space-y-2 pl-2">
                             {/*team tag design*/} {/* amount */}
                             {Object.entries(teamTags).map(([teamId, item]) => (
-                                <div key={teamId} className="flex space-x-1">
+                                <div
+                                    key={teamId}
+                                    className="flex space-x-1"
+                                    onClick={() => showMoreFromOwner(item[0])}
+                                >
                                     <div className="bg-blue-500 text-xs py-1 px-2 text-gray-200">
                                         {teamMap[teamId]?.name}
                                     </div>

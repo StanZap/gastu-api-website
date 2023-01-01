@@ -10,14 +10,23 @@ interface CurrencyTeamsSumAmountProps {
 }
 
 const CurrencyTeamsSumAmount: FC<CurrencyTeamsSumAmountProps> = (props) => {
-    const { type, currency, teamsMap } = props;
+    const { type, currency, teamsMap, onShowMore } = props;
     const { amount: total } = Object.values(teamsMap)
         .map((arr) => arr[0])
         .reduce((acc, item) => {
             return { amount: +acc.amount + +item.amount };
         }) as { amount: number };
 
-    return total && <Amount amount={total} currency={currency} type={type} />;
+    return (
+        total && (
+            <Amount
+                onClick={() => onShowMore()}
+                amount={total}
+                currency={currency}
+                type={type}
+            />
+        )
+    );
 };
 
 export default CurrencyTeamsSumAmount;
