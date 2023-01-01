@@ -37,7 +37,7 @@ export const Amount: FC<AmountProps> = ({
                 <span
                     className={
                         (amountSizeClass || "text-2xl") +
-                        " text-red-700 font-bold"
+                        " text-red-500 font-bold"
                     }
                 >
                     {formatCurrency(amount)}

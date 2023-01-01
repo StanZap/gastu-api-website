@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Transaction } from "../../types";
 import { NavLink } from "react-router-dom";
-import { formatCurrency, formatDate } from "../../../../utils/methods";
+import { formatDate } from "../../../../utils/methods";
 import { useTranslation } from "react-i18next";
-import { TransactionType } from "../../../../utils/enums";
 import { CalendarDaysIcon, UserIcon } from "@heroicons/react/20/solid";
+import { Amount } from "../../../../components/Amounts";
 
 interface TransactionListItemProps {
     order?: number;
@@ -43,18 +43,7 @@ const TransactionListItem: FC<TransactionListItemProps> = (props) => {
             <div className="text-gray-700 text-md flex items-center space-x-1 text-gray-700 ">
                 <span>{tx.subject}</span>
             </div>
-            <div className="space-x-1">
-                {tx.type === TransactionType.Income ? (
-                    <span className="text-green-700 text-3xl font-bold">
-                        {formatCurrency(tx.amount)}
-                    </span>
-                ) : (
-                    <span className="text-red-700 text-3xl font-bold">
-                        {formatCurrency(tx.amount)}
-                    </span>
-                )}
-                <span className="text-xl">{tx.currency}</span>
-            </div>
+            <Amount type={tx.type} amount={tx.amount} currency={tx.currency} />
             <div className="text-sm flex items-center space-x-1 text-gray-600 ">
                 <UserIcon className="w-4 h-4" />
                 <span>{tx.user_name ? `${tx.user_name}` : <></>}</span>
