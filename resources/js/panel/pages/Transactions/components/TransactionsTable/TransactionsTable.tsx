@@ -126,14 +126,13 @@ const TransactionsTable: FC<TransactionsTableProps> = (props) => {
                             {item.amount} {item.currency}
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
-                            {item.account &&
-                                `${item.account.title}, ${item.account.provider_name}`}
+                            {`${item.account_title}, ${item.account_provider}`}
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
-                            <span>{item?.team?.name}</span>
+                            <span>{item?.account_owner_team}</span>
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
-                            <span>{item?.user?.name}</span>
+                            <span>{item?.user_name}</span>
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900 sm:pl-6">
                             {formatDateTime(item.created_at)}

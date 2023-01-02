@@ -8,11 +8,13 @@ export interface Transaction {
     amount: number;
     currency: string;
     user_id: string;
+    user_name: string;
     type: string;
     account_id: number;
     created_at: string;
     updated_at: string;
-    account?: Account;
+    account_title: string;
+    account_provider: string;
     attachments?: Attachment[];
     team_id?: string;
 }
