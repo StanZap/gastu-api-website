@@ -12,10 +12,11 @@ class GetTransactionsController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $teamIds = auth()
+        $allTeams = auth()
             ->user()
-            ->allTeams()
-            ->pluck("id");
+            ->allTeams();
+
+        $teamIds = $allTeams->pluck("id");
 
         $query = DB::table("transactions as t")
             ->select(
@@ -49,7 +50,11 @@ class GetTransactionsController extends Controller
             ->whereIn("team_id", $teamIds); // this is important for privacy/security reasons
 
         if ($request->has("scope") && $request->get("scope") === "mine") {
-            $query->where("user_id", auth()->id());
+            $query->where(
+                "to.id",
+                "=",
+                $allTeams->where("personal_team", "=", true)->first()->id
+            );
         }
 
         if ($request->has("teamId")) {
