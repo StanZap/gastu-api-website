@@ -43,7 +43,7 @@ class AddAttachmentController extends Controller
                 "transactionId" => $validated["transactionId"],
             ]);
 
-            return response()->json(
+            return new Response(
                 [
                     "message" => "Could not upload attachment for transaction",
                 ],

@@ -8,7 +8,7 @@ import Modal from "../../components/Modal";
 import { StatsScopeSwitch } from "../../components/ScopeSwitch";
 import { MyStatsMonthItem } from "../../components/MyStats";
 import { useSearchParams } from "react-router-dom";
-import TeamStatsMonth from "../../components/TeamStats/TeamStatsMonth";
+import { TeamStatsMonth } from "../../components/TeamStats";
 
 const MonthlyStatsList = () => {
     const { t } = useTranslation();
@@ -54,6 +54,7 @@ const MonthlyStatsList = () => {
                         Object.entries(monthlyStats)?.map(
                             ([monthYear, monthStat]) => (
                                 <TeamStatsMonth
+                                    month={monthYear}
                                     monthStat={monthStat}
                                     monthName={
                                         t("months")?.find(

@@ -1,10 +1,12 @@
 import { Amount } from "../Amounts";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../store";
-import { MyStatsMonth, StatsItem } from "../../pages/Stats/StatsItem";
+import { MyStatsMonth } from "../../pages/Stats/StatsItem";
 import { FC, useEffect, useState } from "react";
 import { StoreState } from "../../store/useStore";
-import { UserGroupIcon } from "@heroicons/react/20/solid";
+import { EyeIcon, UserGroupIcon } from "@heroicons/react/20/solid";
+import { AmountUserList } from "./";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 interface AmountItemProps {
     stats: Array<MyStatsMonth>;
@@ -25,37 +27,6 @@ const AmountSum: FC<AmountItemProps> = ({ stats, onShowMore }) => {
             amount={total}
             currency={stats?.[0]?.currency}
         />
-    );
-};
-
-const AmountUserList: FC<{
-    stats: StatsItem[];
-    onShowMore: (item: StatsItem) => void;
-}> = ({ stats, onShowMore }: {}) => {
-    return (
-        <div className="flex flex-col items-start space-y-1">
-            {stats?.map((item: StatsItem, index: number) => (
-                <div className="flex flex-col" key={index}>
-                    <div className="text-md text-gray-600 capitalize">
-                        <span className="mr-2 text-gray-400">&bull;</span>
-                        <span className="text-sm text-gray-600">
-                            {item.user}
-                        </span>
-                    </div>
-                    <div className="flex items-center space-x-1 ml-2">
-                        <span>&nbsp;</span>
-                        <Amount
-                            onClick={() => onShowMore(item)}
-                            type={item.type}
-                            amount={item.amount}
-                            currency={item.currency}
-                            currencySizeClass={"text-sm"}
-                            amountSizeClass={"text-sm"}
-                        />
-                    </div>
-                </div>
-            ))}
-        </div>
     );
 };
 
@@ -109,7 +80,20 @@ const TxItem: FC<TxItemProps> = ({ isPersonalTeam, txType, txTypeStat }) => {
     );
 };
 
-const TeamItem = ({ team, teamStat }) => {
+const TeamItem = ({ team, teamStat, month }) => {
+    const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const goToTeamDetails = () => {
+        navigate({
+            pathname: "/closure",
+            search: `?${createSearchParams({
+                month,
+                teamId: team.id,
+            })}`,
+        });
+    };
+
     return (
         <div
             className={
@@ -118,11 +102,20 @@ const TeamItem = ({ team, teamStat }) => {
             }
         >
             {!team.personal_team ? (
-                <div className="flex space-x-2 items-center">
-                    <UserGroupIcon className="w-8 h-8" />
-                    <h4 className="text-md uppercase first-letter:text-3xl">
-                        {team.name}
-                    </h4>
+                <div className="flex justify-between">
+                    <div className="flex space-x-2 items-center">
+                        <UserGroupIcon className="w-8 h-8" />
+                        <h4 className="text-md uppercase first-letter:text-3xl">
+                            {team.name}
+                        </h4>
+                    </div>
+                    <button
+                        onClick={goToTeamDetails}
+                        className="flex space-x-1 items-center"
+                    >
+                        <EyeIcon className="w-4 h-4" />
+                        <span>{t("viewClosure")}</span>
+                    </button>
                 </div>
             ) : (
                 <></>
@@ -141,7 +134,7 @@ const TeamItem = ({ team, teamStat }) => {
     );
 };
 
-const TeamStatsMonth = ({ monthName, monthStat }) => {
+const TeamStatsMonth = ({ monthName, monthStat, month }) => {
     const [teamMap, setTeamMap] = useState({});
     const { profileData } = useStore((state: StoreState) => ({
         profileData: state.profileData,
@@ -168,6 +161,7 @@ const TeamStatsMonth = ({ monthName, monthStat }) => {
                     ([teamId, teamStat]) =>
                         teamMap[teamId] && (
                             <TeamItem
+                                month={month}
                                 key={teamId}
                                 teamStat={teamStat}
                                 team={teamMap?.[teamId]}

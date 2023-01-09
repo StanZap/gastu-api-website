@@ -9,7 +9,7 @@ const fetchGlobalStats = async (month) => {
         return res.data;
     } catch (e) {
         if (e.response.status === 401) handleLoginError();
-        return e.response;
+        throw e.response;
     }
 };
 
@@ -21,8 +21,20 @@ const fetchMonthlyStats = async (params) => {
         return res.data;
     } catch (e) {
         if (e.response.status === 401) handleLoginError();
-        return e.response;
+        throw e.response;
     }
 };
 
-export { fetchGlobalStats, fetchMonthlyStats };
+const fetchMonthClosureStats = async (params) => {
+    try {
+        const res = await httpClient.get("api/me/stats/closure", {
+            params,
+        });
+        return res.data;
+    } catch (e) {
+        if (e.response.status === 401) handleLoginError();
+        throw e.response;
+    }
+};
+
+export { fetchGlobalStats, fetchMonthlyStats, fetchMonthClosureStats };

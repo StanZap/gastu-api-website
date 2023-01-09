@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Transactions\UpdateTransactionController;
 use App\Http\Controllers\Api\Accounts\GetOneAccountController;
 use App\Http\Controllers\Api\GlobalStatsController;
 use App\Http\Controllers\GetAccountListController;
+use App\Http\Controllers\GetMonthClosureStatsController;
 use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +72,7 @@ Route::middleware("auth:sanctum")
             "/team/transactions",
             GetTeamStatsTransactionsController::class
         );
+        Route::get("/closure", GetMonthClosureStatsController::class);
     });
 
 Route::middleware("auth:sanctum")

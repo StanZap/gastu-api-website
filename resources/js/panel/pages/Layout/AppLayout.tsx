@@ -52,6 +52,7 @@ export default function AppLayout({ children }) {
         { name: t("dashboard"), href: "/" },
         { name: t("transactions"), href: "/transactions" },
         { name: t("accounts"), href: "/accounts" },
+        { name: t("closure"), href: "/closure" },
         // { name: t("budgets"), href: "/budgets" },
     ]);
     const autoDetectLang = localStorage.getItem("autoLang");
