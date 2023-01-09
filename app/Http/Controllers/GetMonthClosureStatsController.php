@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionTypeEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -50,7 +51,7 @@ class GetMonthClosureStatsController extends Controller
                     ->where("tm.personal_team", "=", true)
                     ->join("users as u", "u.id", "=", "tm.user_id");
             })
-            ->where("t.type", "income")
+            ->where("t.type", TransactionTypeEnum::INCOME->value)
             ->whereBetween("t.when", [$start, $end])
             ->groupBy("t.currency", "u.name", "tm.id")
             ->get();
@@ -62,7 +63,7 @@ class GetMonthClosureStatsController extends Controller
             $contributionPercentage
         ) {
             return [
-                "amount" => $item->amount * $contributionPercentage,
+                "amount" => ($item->amount * $contributionPercentage) / 100,
                 "currency" => $item->currency,
                 "user" => $item->user,
                 "team_id" => $item->team_id,
