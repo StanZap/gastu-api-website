@@ -7,13 +7,16 @@ export interface StatsItem {
 }
 
 export interface StatsItemGroupByMonth {
-    [month: string]: {
-        [type: string]: {
-            [currency: string]: {
-                [teamId: string]: StatsItem[];
+    [index: number]: [
+        string,
+        {
+            [type: string]: {
+                [currency: string]: {
+                    [teamId: string]: StatsItem[];
+                };
             };
-        };
-    };
+        }
+    ];
 }
 
 export interface MyStatsMonth {

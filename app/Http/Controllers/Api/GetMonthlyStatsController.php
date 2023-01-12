@@ -29,7 +29,7 @@ class GetMonthlyStatsController extends Controller
             $query = DB::table("transactions as t")
                 ->select(
                     DB::raw(
-                        "sum(t.amount) as amount, t.currency, t.type, t.team_id, DATE_FORMAT(t.`when`,'%m-%Y') as month"
+                        "sum(t.amount) as amount, t.currency, t.type, t.team_id, DATE_FORMAT(t.`when`,'%Y-%m') as month"
                     )
                 )
                 ->rightJoin("accounts as a", "t.account_id", "=", "a.id")
@@ -60,7 +60,7 @@ class GetMonthlyStatsController extends Controller
             $query = DB::table("transactions as t")
                 ->select(
                     DB::raw(
-                        "sum(t.amount) as amount, t.currency, CASE WHEN t.type = 'expense' AND tm.id != t.team_id THEN 'income' WHEN t.type = 'income' AND tm.id != t.team_id THEN 'expense' ELSE t.type END as type, t.team_id, DATE_FORMAT(t.`when`,'%m-%Y') as month, (CASE WHEN tm.id = t.team_id THEN tm.name ELSE u.name END) as user, a.owner_id as account_owner_id"
+                        "sum(t.amount) as amount, t.currency, CASE WHEN t.type = 'expense' AND tm.id != t.team_id THEN 'income' WHEN t.type = 'income' AND tm.id != t.team_id THEN 'expense' ELSE t.type END as type, t.team_id, DATE_FORMAT(t.`when`,'%Y-%m') as month, (CASE WHEN tm.id = t.team_id THEN tm.name ELSE u.name END) as user, a.owner_id as account_owner_id"
                     )
                 )
                 ->rightJoin("accounts as a", "t.account_id", "=", "a.id")
@@ -93,6 +93,13 @@ class GetMonthlyStatsController extends Controller
                 fn($t) => $t->currency,
             ]);
         }
+
+        // as array
+        $res = $res
+            ->map(function ($item, $key) {
+                return [$key, $item];
+            })
+            ->values();
 
         return new Response(
             [

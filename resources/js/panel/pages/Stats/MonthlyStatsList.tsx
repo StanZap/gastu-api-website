@@ -30,45 +30,41 @@ const MonthlyStatsList = () => {
             ) : searchParams?.get("scope") !== "team" ? (
                 <div className="flex flex-col space-y-2">
                     {monthlyStats &&
-                        Object.entries(monthlyStats)?.map(
-                            ([monthYear, monthStat]) => (
-                                <MyStatsMonthItem
-                                    key={monthYear}
-                                    monthName={
-                                        t("months")?.find(
-                                            (_, index) =>
-                                                index ===
-                                                +monthYear.split("-")[0] - 1
-                                        ) +
-                                        " " +
-                                        monthYear.split("-")[1]
-                                    }
-                                    monthStat={monthStat}
-                                />
-                            )
-                        )}
+                        monthlyStats.data?.map(([monthYear, monthStat]) => (
+                            <MyStatsMonthItem
+                                key={monthYear}
+                                monthName={
+                                    t("months")?.find(
+                                        (_, index) =>
+                                            index ===
+                                            +monthYear.split("-")[1] - 1
+                                    ) +
+                                    " " +
+                                    monthYear.split("-")[0]
+                                }
+                                monthStat={monthStat}
+                            />
+                        ))}
                 </div>
             ) : (
                 <div className="flex flex-col space-y-2">
                     {monthlyStats &&
-                        Object.entries(monthlyStats)?.map(
-                            ([monthYear, monthStat]) => (
-                                <TeamStatsMonth
-                                    month={monthYear}
-                                    monthStat={monthStat}
-                                    monthName={
-                                        t("months")?.find(
-                                            (_, index) =>
-                                                index ===
-                                                +monthYear.split("-")[0] - 1
-                                        ) +
-                                        " " +
-                                        monthYear.split("-")[1]
-                                    }
-                                    key={monthYear}
-                                />
-                            )
-                        )}
+                        monthlyStats.data?.map(([monthYear, monthStat]) => (
+                            <TeamStatsMonth
+                                month={monthYear}
+                                monthStat={monthStat}
+                                monthName={
+                                    t("months")?.find(
+                                        (_, index) =>
+                                            index ===
+                                            +monthYear.split("-")[1] - 1
+                                    ) +
+                                    " " +
+                                    monthYear.split("-")[0]
+                                }
+                                key={monthYear}
+                            />
+                        ))}
                 </div>
             )}
             <Modal isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}>

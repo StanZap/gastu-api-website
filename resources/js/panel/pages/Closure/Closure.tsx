@@ -22,7 +22,6 @@ const Closure = () => {
     const [data, setData] = useState(null);
     const [pendingItems, setPendingItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const month = 12;
     const currency = DEFAULT_CURRENCY;
     const navigate = useNavigate();
 
@@ -93,12 +92,20 @@ const Closure = () => {
         );
     };
 
+    const getHeaderTitle = () => {
+        const titleLeft = t("closure");
+        const monthYear = searchParams.get("month").split("-");
+        if (monthYear && monthYear.length === 2) {
+            const monthNumber = +monthYear[1] - 1;
+            return `${titleLeft} ${t("months")[monthNumber]}, ${monthYear[0]}`;
+        }
+        return;
+    };
+
     return (
         <AppLayout>
             <div className="flex justify-between flex-col md:flex-row">
-                <h1 className="text-2xl mb-2">
-                    {t("closure")} {t("months")[month - 1]}
-                </h1>
+                <h1 className="text-2xl mb-2">{getHeaderTitle()}</h1>
             </div>
             {isLoading ? (
                 <Loader />

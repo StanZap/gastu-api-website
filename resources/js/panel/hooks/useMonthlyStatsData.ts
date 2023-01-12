@@ -22,7 +22,7 @@ const useMonthlyStats = () => {
             }
 
             const resp = await fetchMonthlyStats(params);
-            setMonthlyStats(resp?.data);
+            setMonthlyStats(resp);
             setIsLoading(false);
         } catch (e) {
             setIsLoading(false);
