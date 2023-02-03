@@ -22,8 +22,8 @@ const TransactionListSummary = () => {
     useEffect(() => {
         if (!stat) return;
         setParams({
-            month: stat?.month?.split("-")?.[0],
-            year: stat?.month?.split("-")?.[1],
+            year: stat?.month?.split("-")?.[0],
+            month: stat?.month?.split("-")?.[1],
             type: stat.type,
             teamId: stat.team_id,
             currency: stat.currency,
@@ -35,9 +35,11 @@ const TransactionListSummary = () => {
     const getTitle = () => {
         const $type = `${t(stat.type)}s`;
         const team = teams.find((t) => t.id === stat.team_id)?.name ?? "";
-        const [month, year] = stat.month.split("-");
-        const monthYear = `${t("months")[month - 1].substr(0, 3)} ${year}`;
-        return `${$type} ${team}, ${monthYear} (${transactionList.length})`;
+        const [year, month] = stat.month.split("-");
+        const monthYear = `${t("months")[month - 1]?.substr(0, 3)} ${year}`;
+        return `${team ? $type + " " + team : $type}, ${monthYear} (${
+            transactionList.length
+        })`;
     };
 
     return isLoading ? (
@@ -57,7 +59,7 @@ const TransactionListSummary = () => {
                         />
                     ))}
                     {transactionList.length === 0 ? (
-                        <p className="pt-4 text-gray-700">
+                        <p className="pt-4 px-8 text-gray-700">
                             {t("noTransactions")}
                         </p>
                     ) : (

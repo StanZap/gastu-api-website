@@ -24,13 +24,13 @@ class GetMonthClosureStatsController extends Controller
         // Get total income transactions of the month, where team is $teamId grouped by user and currency.
         // Do not include expense transactions or teams
 
-        $monthYear = Str::of($request->get("month"))
+        $yearMonth = Str::of($request->get("month"))
             ->split("/-/")
             ->toArray();
 
         $start = now()
-            ->setMonth($monthYear[0])
-            ->setYear($monthYear[1])
+            ->setYear($yearMonth[0])
+            ->setMonth($yearMonth[1])
             ->startOfMonth();
 
         $end = $start->clone()->endOfMonth();
